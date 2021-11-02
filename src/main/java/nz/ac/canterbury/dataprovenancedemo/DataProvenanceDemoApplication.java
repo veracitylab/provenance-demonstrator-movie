@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.List;
 
 @SpringBootApplication
 public class DataProvenanceDemoApplication {

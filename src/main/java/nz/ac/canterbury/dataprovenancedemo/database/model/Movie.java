@@ -2,6 +2,7 @@ package nz.ac.canterbury.dataprovenancedemo.database.model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name = "Movies")
@@ -33,6 +34,13 @@ public class Movie {
 
     public Date getReleaseYear() {
         return releaseYear;
+    }
+
+    public String getReleaseYearString() {
+        final String format = "yyyy";
+        final SimpleDateFormat formatter = new SimpleDateFormat(format);
+
+        return formatter.format(releaseYear);
     }
 
     public String getPosterUrl() {
