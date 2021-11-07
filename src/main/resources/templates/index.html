@@ -36,8 +36,79 @@
         </div>
     </nav>
 
-    <div class="container d-flex h-100 p-4 mx-auto flex-column">
-        <h2 class="justify-content-center">Beans</h2>
+    <div class="container h-100 p-4 mx-auto">
+        <div class="row">
+            <div class="col-md bg-light">
+                <div class="container">
+                    <br>
+                    <h3 class="text-dark text-center">A demonstrator for data provenance</h3>
+                    <p class="text-justify">
+                        The aim of this demonstrator is to show that data provenance principles can be included in a
+                        machine learning based application. The idea for this demonstrator is that a user may request
+                        movie recommendations based on some features, and the provided recommendations will have
+                        provenance baked in. This allows a user to understand why a particular movie was recommended to
+                        them, including what data was used to generate the recommendation and what rules the machine
+                        learning algorithm has used to produce such a recommendation.
+                    </p>
+
+                    <br>
+
+                    <h4>This demonstrator is sponsored by:</h4>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="card">
+                                <img class="card-img-top" th:src="@{img/matthias_profile.png}" alt="Matthias Galster"/>
+                                <div class="card-body">
+                                    <h5 class="card-title">Matthias Galster</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">University of Canterbury</h6>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="https://www.cosc.canterbury.ac.nz/matthias.galster/" class="card-link">UC profile</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="card">
+                                <img class="card-img-top" th:src="@{img/jens_profile.png}" alt="Jens Dietrich" />
+                                <div class="card-body">
+                                    <h5 class="card-title">Jens Dietrich</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">University of Victoria</h6>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="https://people.wgtn.ac.nz/jens.dietrich" class="card-link">VUW profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md bg-dark">
+                <br>
+                <h3 class="text-light text-center">Login for custom recommendations</h3>
+
+                <br>
+
+                <form>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">User</div>
+                            </div>
+                            <input type="text" name="username" class="form-control" id="inputUsername">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Pass</div>
+                            </div>
+                            <input type="password" name="password" class="form-control" id="inputPassword">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
 
