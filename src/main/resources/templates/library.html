@@ -11,7 +11,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="d-flex flex-grow-1">
             <span class="w-100 d-lg-none d-block"></span>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 Movie Recommender - With transparency!
             </a>
             <div class="w-100 text-right">
@@ -37,6 +37,12 @@
 
     <div class="container">
         <h1 class="header">Movie catalogue</h1>
+
+        <form>
+            <div class="form-row">
+
+            </div>
+        </form>
         <table class="table">
             <thead>
             <tr>
@@ -48,9 +54,9 @@
 
             <tbody>
             <tr th:each="movie: ${movies}">
-                <td th:text="${movie.getId()}" />
-                <td th:text="${movie.getTitle()}" />
-                <td th:text="${movie.getReleaseYearString()}" />
+                <td th:text="${movie.getId()}"></td>
+                <td th:text="${movie.getTitle()}"></td>
+                <td th:text="${movie.getReleaseYearString()}"></td>
             </tr>
             </tbody>
         </table>
