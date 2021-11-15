@@ -1,5 +1,6 @@
-package nz.ac.canterbury.dataprovenancedemo;
+package nz.ac.canterbury.dataprovenancedemo.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,26 +10,33 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final static String DP = "password";
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("matthias").password(passwordEncoder().encode(DP)).roles("USER")
-            .and()
-            .withUser("jens").password(passwordEncoder().encode(DP)).roles("USER")
-            .and()
-            .withUser("sam").password(passwordEncoder().encode(DP)).roles("USER");
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    protected void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+            .dataSource(dataSource)
+            .passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-            .antMatchers("/login*").permitAll()
-            .anyRequest().permitAll();
+        http.authorizeRequests()
+                .antMatchers("/", "/library").permitAll()
+                .anyRequest().permitAll()
+            .and()
+            .formLogin()
+                .loginPage("/")
+                .permitAll()
+                .and()
+            .logout(logout -> logout.permitAll().logoutSuccessUrl("/"));
     }
 
     /**
@@ -36,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @return A BCrypt implementation of the password encoder
      */
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

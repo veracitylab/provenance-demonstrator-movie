@@ -29,8 +29,21 @@
                 <li class="nav-item">
                     <a href="/library" class="nav-link">View Library</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Login</a>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <a href="/" class="nav-link">Login</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" th:text="${'Hi ' + #authentication.getName()}"></a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a class="dropdown-item" href="#">View watch history</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><div class="dropdown-divider"></div></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button class="dropdown-item btn btn-outline-danger" type="submit">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -88,7 +101,7 @@
 
                 <br>
 
-                <form>
+                <form th:action="@{/}" method="post">
                     <div class="form-row">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -97,7 +110,9 @@
                             <input type="text" name="username" class="form-control" id="inputUsername">
                         </div>
                     </div>
+
                     <br>
+
                     <div class="form-row">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -106,7 +121,21 @@
                             <input type="password" name="password" class="form-control" id="inputPassword">
                         </div>
                     </div>
+
+                    <br>
+
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">Invalid username and/or password</div>
+                    </div>
+
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-outline-primary">Login</button>
+                    </div>
                 </form>
+
+                <br>
+
+                <h4 class="text-light">Explanation goes here for profiles</h4>
             </div>
         </div>
     </div>
@@ -114,5 +143,6 @@
 
 </body>
 
+<script th:src="@{js/jquery-3.6.0.min.js}"></script>
 <script th:src="@{js/bootstrap.bundle.min.js}"></script>
 </html>

@@ -10,18 +10,30 @@ CREATE TABLE MOVIES (
 
 DROP TABLE IF EXISTS PROFILES;
 
-CREATE TABLE PROFILES (
-    id INT auto_increment PRIMARY KEY,
-    name VARCHAR(250) NOT NULL
+CREATE TABLE USERS (
+    username VARCHAR(250) NOT NULL,
+    password VARCHAR(250) NOT NULL,
+    enabled TINYINT NOT NULL DEFAULT 1,
+    PRIMARY KEY (username)
 );
+
+DROP TABLE IF EXISTS AUTHORITIES;
+
+CREATE TABLE AUTHORITIES (
+    username VARCHAR(250) NOT NULL,
+    authority VARCHAR(50) NOT NULL,
+    FOREIGN KEY (username) REFERENCES USERS(username)
+);
+
+CREATE UNIQUE INDEX ix_auth_email on AUTHORITIES (username, authority);
 
 DROP TABLE IF EXISTS RATINGS;
 
 CREATE TABLE RATINGS (
     movie_id INT,
-    profile_id INT,
+    profile VARCHAR(250),
     rating INT NOT NULL,
     FOREIGN KEY (movie_id) references MOVIES(id),
-    FOREIGN KEY (profile_id) references PROFILES(id),
-    PRIMARY KEY (movie_id, profile_id)
+    FOREIGN KEY (profile) references USERS(username),
+    PRIMARY KEY (movie_id, profile)
 );
