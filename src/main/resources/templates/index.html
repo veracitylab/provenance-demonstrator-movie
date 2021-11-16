@@ -97,46 +97,56 @@
             </div>
             <div class="col-md bg-dark">
                 <br>
-                <h3 class="text-light text-center">Login for custom recommendations</h3>
 
-                <br>
-
-                <form th:action="@{/}" method="post">
-                    <div class="form-row">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">User</div>
-                            </div>
-                            <input type="text" name="username" class="form-control" id="inputUsername">
-                        </div>
-                    </div>
+                <div sec:authorize="isAnonymous()">
+                    <h3 class="text-light text-center">Login for custom recommendations</h3>
 
                     <br>
 
-                    <div class="form-row">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">Pass</div>
+                    <form th:action="@{/}" method="post">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">User</div>
+                                </div>
+                                <input type="text" name="username" class="form-control" id="inputUsername">
                             </div>
-                            <input type="password" name="password" class="form-control" id="inputPassword">
                         </div>
-                    </div>
 
-                    <br>
+                        <br>
 
-                    <div th:if="${param.error}">
-                        <div class="alert alert-danger">Invalid username and/or password</div>
-                    </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Pass</div>
+                                </div>
+                                <input type="password" name="password" class="form-control" id="inputPassword">
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger">Invalid username and/or password</div>
+                        </div>
 
                     <div class="form-row">
                         <button type="submit" class="btn btn-outline-primary">Login</button>
                     </div>
                 </form>
-
-                <br>
-
-                <h4 class="text-light">Explanation goes here for profiles</h4>
             </div>
+
+                <div sec:authorize="isAuthenticated()">
+                    <h3 class="text-light text-left" th:text="${'Logged in as: ' + #authentication.getName()}"></h3>
+                </div>
+
+                <br><br>
+
+                <h4 class="text-left text-light">About profiles:</h4>
+                <p class="text-light">
+                    Each profile comes pre-loaded with some starred movies, which should give the recommendation engine
+                    something to work with
+                </p>
         </div>
     </div>
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class LibraryService {
-    private final static int DEFAULT_PAGE_SIZE = 100;
+    private static final int DEFAULT_PAGE_SIZE = 100;
 
     private final MovieRepository movieRepository;
 
@@ -22,26 +22,22 @@ public class LibraryService {
         this.movieRepository = movieRepository;
     }
 
-    public List<Movie> searchMovieTitle(String title) {
-        List<Movie> result = movieRepository.findMovieByTitleContaining(title);
-
-        return null;
-    }
-
-    public List<Movie> getAllMovies() {
-        Page<Movie> res = movieRepository.findAll(PageRequest.of(0, DEFAULT_PAGE_SIZE));
-        return res.toList();
+    /**
+     * Gets movies with optional pagination
+     * @param pageNum Page number to go to
+     * @return A page of unsorted movies
+     */
+    public Page<Movie> getMovies(int pageNum) {
+        return movieRepository.findAll(PageRequest.of(pageNum, DEFAULT_PAGE_SIZE));
     }
 
     /**
-     * Function to obtain a page of movies with sorting enabled. Currently the default number of movies are selected.
-     * @param pageNumber The page to begin at.
-     * @param sortBy Field of Movie to sort by.
-     * @return List of movies sorted by the provided sort field.
+     * Searches the movie database, including ability to paginate
+     * @param pageNum Page number to query
+     * @param title Title to search by, the case is ignored
+     * @return A Page of movies filtered by their title
      */
-    public List<Movie> getMoviePageWithSort(int pageNumber, String sortBy) {
-        Pageable request = PageRequest.of(pageNumber, DEFAULT_PAGE_SIZE, Sort.by(sortBy));
-        Page<Movie> result = movieRepository.findAll(request);
-        return result.toList();
+    public Page<Movie> getMoviesByTitle(int pageNum, String title) {
+        return movieRepository.findMovieByTitleContainingIgnoreCase(title, PageRequest.of(pageNum, DEFAULT_PAGE_SIZE));
     }
 }

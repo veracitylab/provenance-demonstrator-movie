@@ -12,5 +12,5 @@ public interface MovieRepository extends Repository<Movie, Integer> {
 
     Page<Movie> findAll(Pageable pageable);
     Optional<Movie> findMovieById(int id);
-    List<Movie> findMovieByTitleContaining(String titleSearch);
+    Page<Movie> findMovieByTitleContainingIgnoreCase(String titleSearch, Pageable pageable);
 }

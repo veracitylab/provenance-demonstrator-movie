@@ -4,11 +4,16 @@ import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.services.LibraryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class LibraryController {
@@ -20,10 +25,22 @@ public class LibraryController {
     }
 
     @GetMapping("/library")
-    public String libraryLanding(Model model) {
-        List<Movie> displayMovies = service.getAllMovies();
-        logger.debug(String.format("Loaded %s movies", displayMovies.size()));
-        model.addAttribute("movies", displayMovies);
+    public String libraryLanding(Model model,
+                                 @RequestParam("page") Optional<Integer> pageNum,
+                                 @RequestParam("title") Optional<String> titleSearch)
+    {
+        int currPage = pageNum.orElse(1);
+        Page<Movie> moviePage;
+
+        if (titleSearch.isPresent()) {
+            model.addAttribute("searchTerm", titleSearch.get());
+            moviePage = service.getMoviesByTitle(currPage - 1, titleSearch.get());
+        } else {
+            moviePage = service.getMovies(currPage - 1);
+        }
+
+        model.addAttribute("movies", moviePage);
+
         return "library";
     }
 }
