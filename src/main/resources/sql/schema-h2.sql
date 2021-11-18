@@ -8,7 +8,7 @@ CREATE TABLE MOVIES (
     poster_url VARCHAR(1024)
 );
 
-DROP TABLE IF EXISTS PROFILES;
+DROP TABLE IF EXISTS USERS;
 
 CREATE TABLE USERS (
     username VARCHAR(250) NOT NULL,
@@ -31,9 +31,9 @@ DROP TABLE IF EXISTS RATINGS;
 
 CREATE TABLE RATINGS (
     movie_id INT,
-    profile VARCHAR(250),
+    user VARCHAR(250),
     rating INT NOT NULL,
     FOREIGN KEY (movie_id) references MOVIES(id),
-    FOREIGN KEY (profile) references USERS(username),
-    PRIMARY KEY (movie_id, profile)
+    FOREIGN KEY (user) references USERS(username),
+    PRIMARY KEY (movie_id, user)
 );

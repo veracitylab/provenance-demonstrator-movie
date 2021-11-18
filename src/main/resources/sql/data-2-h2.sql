@@ -5,3 +5,6 @@ INSERT INTO USERS(username, password, enabled) VALUES ('sam', '$2a$10$p/EED1bMGH
 INSERT INTO AUTHORITIES(username, authority) VALUES ('matthias', 'ROLE_USER');
 INSERT INTO AUTHORITIES(username, authority) VALUES ('jens', 'ROLE_USER');
 INSERT INTO AUTHORITIES(username, authority) VALUES ('sam', 'ROLE_USER');
+
+INSERT INTO RATINGS(movie_id, user, rating) VALUES (1, 'sam', 4);
+INSERT INTO RATINGS(movie_id, user, rating) VALUES (1, 'matthias', 2);

@@ -10,10 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 public class LibraryController {
@@ -29,14 +26,14 @@ public class LibraryController {
                                  @RequestParam("page") Optional<Integer> pageNum,
                                  @RequestParam("title") Optional<String> titleSearch)
     {
-        int currPage = pageNum.orElse(1);
+        int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
 
         if (titleSearch.isPresent()) {
             model.addAttribute("searchTerm", titleSearch.get());
-            moviePage = service.getMoviesByTitle(currPage - 1, titleSearch.get());
+            moviePage = service.getMoviesByTitle(currPage, titleSearch.get());
         } else {
-            moviePage = service.getMovies(currPage - 1);
+            moviePage = service.getMovies(currPage);
         }
 
         model.addAttribute("movies", moviePage);

@@ -3,6 +3,7 @@ package nz.ac.canterbury.dataprovenancedemo.database.model;
 import javax.persistence.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Entity
 @Table(name = "Movies")
@@ -20,7 +21,12 @@ public class Movie {
     @Column(name = "poster_url")
     private String posterUrl;
 
+    @Column(name = "genres")
     private String genres;
+
+    @OneToMany
+    @JoinColumn(name = "movie_id", referencedColumnName = "id", nullable = true)
+    private List<Rating> ratings;
 
     protected Movie() {}
 
@@ -49,5 +55,12 @@ public class Movie {
 
     public String getGenres() {
         return genres;
+    }
+
+    public Rating getUserRating(String username) {
+        return this.ratings.stream()
+                .filter(rating -> rating.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
     }
 }

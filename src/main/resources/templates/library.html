@@ -65,6 +65,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Title</th>
                 <th scope="col">Release Year</th>
+                <th sec:authorize="isAuthenticated()">Your Rating</th>
             </tr>
             </thead>
 
@@ -73,6 +74,10 @@
                 <td th:text="${movie.getId()}"></td>
                 <td th:text="${movie.getTitle()}"></td>
                 <td th:text="${movie.getReleaseYearString()}"></td>
+                <div sec:authorize="isAuthenticated()" th:with="rating=${movie.getUserRating(#authentication.getName())}">
+                    <td th:if="${rating != null}" th:text="${rating.getRating()}"></td>
+                    <td th:if="${rating == null}" th:text="${'Not rated yet'}"></td>
+                </div>
             </tr>
             </tbody>
         </table>
