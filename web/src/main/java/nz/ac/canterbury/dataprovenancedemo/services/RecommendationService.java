@@ -1,6 +1,7 @@
 package nz.ac.canterbury.dataprovenancedemo.services;
 
 import nz.ac.canterbury.dataprovenancedemo.MovieRecommender;
+import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.database.repositories.MovieRepository;
 import nz.ac.canterbury.dataprovenancedemo.utils.RecommenderConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class RecommendationService {
@@ -26,10 +28,11 @@ public class RecommendationService {
 
     @PostConstruct
     private void setRecommender() {
-        this.recommender = RecommenderConfiguration.getRecommender(recommendationMethod);
+        recommender = RecommenderConfiguration.getRecommender(recommendationMethod);
     }
 
-    public String recommendation() {
-        return recommendationMethod;
+    public List<Movie> getRecommendations() {
+        List<Integer> recommendationIds =  recommender.getRecommendations();
+        return movieRepository.findMoviesByIds(recommendationIds);
     }
 }

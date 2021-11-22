@@ -34,7 +34,7 @@ public class LibraryController {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
 
-        System.out.println(recommendationService.recommendation());
+        System.out.println(recommendationService.getRecommendations());
 
         if (titleSearch.isPresent()) {
             model.addAttribute("searchTerm", titleSearch.get());
