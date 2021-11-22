@@ -2,9 +2,10 @@ plugins {
     id 'java'
 }
 
-version '0.0.1-SNAPSHOT'
-
 repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation 'nz.ac.waikato.cms.weka:weka-stable:3.8.5'
+}

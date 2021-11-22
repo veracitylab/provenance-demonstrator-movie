@@ -1,5 +1,6 @@
 package nz.ac.canterbury.dataprovenancedemo.controllers;
 
+import nz.ac.canterbury.dataprovenancedemo.Jeff;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.services.LibraryService;
 import org.slf4j.Logger;
@@ -28,6 +29,8 @@ public class LibraryController {
     {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
+
+        System.out.println(Jeff.jeff());
 
         if (titleSearch.isPresent()) {
             model.addAttribute("searchTerm", titleSearch.get());
