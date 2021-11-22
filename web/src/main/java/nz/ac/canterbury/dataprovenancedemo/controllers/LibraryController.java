@@ -2,8 +2,10 @@ package nz.ac.canterbury.dataprovenancedemo.controllers;
 
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.services.LibraryService;
+import nz.ac.canterbury.dataprovenancedemo.services.RecommendationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +17,13 @@ import java.util.Optional;
 @Controller
 public class LibraryController {
     private static final Logger logger = LoggerFactory.getLogger(LibraryController.class);
-    private final LibraryService service;
+    private final LibraryService libraryService;
+    private final RecommendationService recommendationService;
 
-    public LibraryController(LibraryService service) {
-        this.service = service;
+    @Autowired
+    public LibraryController(LibraryService libraryService, RecommendationService recommendationService) {
+        this.libraryService = libraryService;
+        this.recommendationService = recommendationService;
     }
 
     @GetMapping("/library")
@@ -29,11 +34,13 @@ public class LibraryController {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
 
+        System.out.println(recommendationService.recommendation());
+
         if (titleSearch.isPresent()) {
             model.addAttribute("searchTerm", titleSearch.get());
-            moviePage = service.getMoviesByTitle(currPage, titleSearch.get());
+            moviePage = libraryService.getMoviesByTitle(currPage, titleSearch.get());
         } else {
-            moviePage = service.getMovies(currPage);
+            moviePage = libraryService.getMovies(currPage);
         }
 
         model.addAttribute("movies", moviePage);

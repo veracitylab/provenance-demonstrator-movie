@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "movie.recommender.method",
+      "type": "java.lang.String",
+      "description": "Description for movie.recommender.method."
+  }
+] }
