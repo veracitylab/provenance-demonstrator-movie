@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -33,8 +34,7 @@ public class LibraryController {
     {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
-
-        System.out.println(recommendationService.getRecommendations());
+        List<Movie> tempMoveRecommendations = recommendationService.getRecommendations();
 
         if (titleSearch.isPresent()) {
             model.addAttribute("searchTerm", titleSearch.get());
@@ -43,6 +43,7 @@ public class LibraryController {
             moviePage = libraryService.getMovies(currPage);
         }
 
+        model.addAttribute("recommendations", tempMoveRecommendations);
         model.addAttribute("movies", moviePage);
 
         return "library";

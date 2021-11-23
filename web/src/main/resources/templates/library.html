@@ -49,8 +49,30 @@
     </nav>
 
     <div class="container">
-        <h1 class="header text-center">Movie catalogue</h1>
+        <h1 class="header text-center">Browse movies here!</h1>
 
+        <!-- TODO: Move this to an authenticated block -->
+        <h3 class="text-left">Recommended</h3>
+        <table class="table" th:if="${recommendations != null || recommendations.size() > 1}">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Release year</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="movie: ${recommendations}">
+                <td th:text="${movie.getId()}"></td>
+                <td th:text="${movie.getTitle()}"></td>
+                <td th:text="${movie.getReleaseYearString()}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <h3 class="text-left">Catalogue</h3>
         <form method="get" action="/library">
             <div class="input-group">
                 <input type="search" class="form-control rounded" placeholder="Search title" name="title">

@@ -25,7 +25,7 @@ public class Movie {
     private String genres;
 
     @OneToMany
-    @JoinColumn(name = "movie_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "movie_id", referencedColumnName = "id")
     private List<Rating> ratings;
 
     protected Movie() {}
