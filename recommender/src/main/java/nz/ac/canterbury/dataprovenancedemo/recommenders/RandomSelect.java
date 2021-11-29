@@ -17,11 +17,21 @@ public class RandomSelect implements MovieRecommender {
 
     private static final Random RNG = new Random();
 
+    /**
+     * Obtains the default number of recommendations.
+     * @param features The features needed to perform the recommendation
+     */
     @Override
     public List<Integer> getRecommendations(Object features) {
         return getRecommendations(features, DEFAULT_NUM_RECOMMENDATIONS);
     }
 
+    /**
+     * Gets a random selection of recommendations from a range of numbers [0, 17000]
+     * @param features The features needed to perform the recommendation. Can be nu
+     * @param resultSize Number or recommendations to provide
+     * @return
+     */
     @Override
     public List<Integer> getRecommendations(Object features, int resultSize) {
         Stream<Integer> randomSelection = Stream.generate(
