@@ -7,17 +7,12 @@ import java.util.List;
 
 public class SimilarNeighbours implements MovieRecommender {
     @Override
-    public void provideFeatures(Object features) {
-
-    }
-
-    @Override
-    public List<Integer> getRecommendations() {
+    public List<Integer> getRecommendations(Object features) {
         return null;
     }
 
     @Override
-    public List<Integer> getRecommendations(int resultSize) {
+    public List<Integer> getRecommendations(Object features, int resultSize) {
         return null;
     }
 
