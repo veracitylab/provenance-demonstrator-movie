@@ -29,8 +29,8 @@ public class RandomSelect implements MovieRecommender {
     /**
      * Gets a random selection of recommendations from a range of numbers [0, 17000]
      * @param features The features needed to perform the recommendation. Can be nu
-     * @param resultSize Number or recommendations to provide
-     * @return
+     * @param resultSize Number of recommendations to provide
+     * @return A list of integers randomly selected from the range specified above.
      */
     @Override
     public List<Integer> getRecommendations(Object features, int resultSize) {
@@ -41,6 +41,11 @@ public class RandomSelect implements MovieRecommender {
         return randomSelection.collect(Collectors.toList());
     }
 
+    /**
+     * Currently does nothing, however will do something once the annotation processor is done
+     * TODO: This
+     * @return
+     */
     @Override
     public ProvenanceData getProvenanceData() {
         return new ProvenanceData();
