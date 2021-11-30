@@ -9,4 +9,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 @Retention(RUNTIME)
 public @interface AlgorithmStep {
+
+    String name();
+    int order() default 0;
 }

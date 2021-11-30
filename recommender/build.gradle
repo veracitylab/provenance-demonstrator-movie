@@ -4,4 +4,5 @@ repositories {
 
 dependencies {
     implementation 'nz.ac.waikato.cms.weka:weka-stable:3.8.5'
+    testImplementation 'junit:junit:4.13'
 }

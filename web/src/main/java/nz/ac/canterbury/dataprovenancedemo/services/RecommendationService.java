@@ -33,6 +33,7 @@ public class RecommendationService {
 
     public List<Movie> getRecommendations() {
         List<Integer> recommendationIds =  recommender.getRecommendations(5);
+        recommender.getProvenanceData();
         return movieRepository.findMoviesByIds(recommendationIds);
     }
 }

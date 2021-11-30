@@ -23,8 +23,4 @@ public class RecommenderConfiguration {
             throw new IllegalArgumentException("Could not create recommender");
         }
     }
-//
-//    public static void main(String[] args) {
-//        System.out.println(getRecommender("RandomSelect").getRecommendations());
-//    }
 }
