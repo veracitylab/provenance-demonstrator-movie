@@ -7,8 +7,6 @@ import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmProperty;
 import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmStep;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProvenanceProcessor {
@@ -27,22 +25,19 @@ public class ProvenanceProcessor {
         String algorithmName = algoNames[0].name();
         String algoDescription = algoNames[0].description();
 
-        List<AlgorithmStep> sortedSteps = Arrays.stream(algoSteps)
-                .sorted(Comparator.comparingInt(AlgorithmStep::order))
-                .collect(Collectors.toList());
-
         SelfReportedProvenanceData data = new SelfReportedProvenanceData.Builder()
                 .algorithmName(algorithmName)
-                .algorithmSteps(sortedSteps)
+//                .algorithmSteps(Arrays.asList(algoSteps))
+                .algorithmProperties(Arrays.asList(algoProps))
                 .build();
 
         System.out.println(data.getReport());
 
-        Class<?> clazz = target.getClass();
-
-        System.out.printf("Algorithm information for class: %s%n", clazz.getSimpleName());
-        System.out.printf("\tName: %s%n", algorithmName);
-        System.out.printf("\tDescription: %s%n", algoDescription);
+//        Class<?> clazz = target.getClass();
+//
+//        System.out.printf("Algorithm information for class: %s%n", clazz.getSimpleName());
+//        System.out.printf("\tName: %s%n", algorithmName);
+//        System.out.printf("\tDescription: %s%n", algoDescription);
     }
 
 }

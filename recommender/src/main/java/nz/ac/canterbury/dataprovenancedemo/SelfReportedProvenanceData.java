@@ -3,6 +3,7 @@ package nz.ac.canterbury.dataprovenancedemo;
 import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmProperty;
 import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmStep;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class SelfReportedProvenanceData {
@@ -36,13 +37,31 @@ public class SelfReportedProvenanceData {
 
     public String getReport() {
         StringBuilder reportBuilder = new StringBuilder();
+        boolean isNamePresent = this.name != null;
+        boolean isStepsPresent = this.steps != null;
+        boolean isPropsPresent = this.properties != null;
 
         reportBuilder.append("Self reported provenance data:\n");
-        reportBuilder.append(String.format("  Algorithm name: %s%n", this.name != null ? this.name : NO_SPEC));
+        reportBuilder.append(String.format("  Algorithm name: %s%n", isNamePresent ? this.name : NO_SPEC));
         reportBuilder.append("  Algorithm description: TODO\n\n");
-        reportBuilder.append(String.format("  Properties (%s): %n", this.properties != null ? this.properties.size() : NO_SPEC));
+        reportBuilder.append(String.format("  Properties (%s): %n", isPropsPresent ? this.properties.size() : NO_SPEC));
 
-        reportBuilder.append(String.format("  Steps (%s):%n", this.steps != null ? steps.size() : NO_SPEC));
+        if (isPropsPresent) {
+            //TODO: Implement type grabbing
+            for(AlgorithmProperty prop: this.properties) {
+                reportBuilder.append(String.format("    Name: %s%n", prop.name()));
+                //TODO: Add the type and value from introspection
+            }
+        }
+
+        reportBuilder.append(String.format("  Steps (%s):%n", isStepsPresent ? steps.size() : NO_SPEC));
+
+        if(isStepsPresent) {
+            for(AlgorithmStep step: this.steps) {
+                reportBuilder.append(String.format("    %s. %s%n", step.order(), step.name()));
+                //TODO: Step description to go here
+            }
+        }
 
         return reportBuilder.toString();
     }
@@ -63,6 +82,7 @@ public class SelfReportedProvenanceData {
 
         public Builder algorithmSteps(List<AlgorithmStep> steps) {
             this.selfRepSteps = steps;
+            this.selfRepSteps.sort(Comparator.comparingInt(AlgorithmStep::order));
             return this;
         }
 

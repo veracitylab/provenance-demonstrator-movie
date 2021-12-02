@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 @Algorithm(
         name = "Random Select",
-        description = "Randomly selects n integers from a range or set of integers"
+        description = "Randomly selects n integers from a range of generated integers"
 )
 public class RandomSelect implements MovieRecommender {
 
