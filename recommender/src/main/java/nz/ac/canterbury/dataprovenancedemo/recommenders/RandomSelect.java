@@ -43,14 +43,13 @@ public class RandomSelect implements MovieRecommender {
     }
 
     /**
-     * Currently does nothing, however will do something once the annotation processor is done
-     * TODO: This
+     * Returns the provenance data with information supplied by the annotations of the class
      * @return
      */
     @Override
     public ProvenanceData getProvenanceData() {
         ProvenanceProcessor.process(this);
 
-        return new ProvenanceData();
+        return null;
     }
 }
