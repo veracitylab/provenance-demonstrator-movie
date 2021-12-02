@@ -13,7 +13,7 @@ public class ProvenanceProcessor {
 
     protected ProvenanceProcessor() {}
 
-    public static void process(MovieRecommender target) {
+    public static SelfReportedProvenanceData process(MovieRecommender target) {
         Algorithm[] algoNames = target.getClass().getAnnotationsByType(Algorithm.class);
         AlgorithmStep[] algoSteps = target.getClass().getAnnotationsByType(AlgorithmStep.class);
         AlgorithmProperty[] algoProps = target.getClass().getAnnotationsByType(AlgorithmProperty.class);
@@ -31,13 +31,14 @@ public class ProvenanceProcessor {
                 .algorithmProperties(Arrays.asList(algoProps))
                 .build();
 
-        System.out.println(data.getReport());
-
-//        Class<?> clazz = target.getClass();
+        //        Class<?> clazz = target.getClass();
 //
 //        System.out.printf("Algorithm information for class: %s%n", clazz.getSimpleName());
 //        System.out.printf("\tName: %s%n", algorithmName);
 //        System.out.printf("\tDescription: %s%n", algoDescription);
+
+        System.out.println(data.getReport());
+        return data;
     }
 
 }

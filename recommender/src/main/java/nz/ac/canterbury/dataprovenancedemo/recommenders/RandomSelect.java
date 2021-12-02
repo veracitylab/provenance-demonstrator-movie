@@ -2,6 +2,7 @@ package nz.ac.canterbury.dataprovenancedemo.recommenders;
 
 import nz.ac.canterbury.dataprovenancedemo.MovieRecommender;
 import nz.ac.canterbury.dataprovenancedemo.ProvenanceData;
+import nz.ac.canterbury.dataprovenancedemo.SelfReportedProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.annotations.Algorithm;
 import nz.ac.canterbury.dataprovenancedemo.utils.ProvenanceProcessor;
 
@@ -48,8 +49,8 @@ public class RandomSelect implements MovieRecommender {
      */
     @Override
     public ProvenanceData getProvenanceData() {
-        ProvenanceProcessor.process(this);
+        SelfReportedProvenanceData srd = ProvenanceProcessor.process(this);
 
-        return null;
+        return new ProvenanceData(srd);
     }
 }

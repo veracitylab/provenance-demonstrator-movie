@@ -8,4 +8,8 @@ public class ProvenanceData {
     public ProvenanceData(SelfReportedProvenanceData data) {
         this.selfReportedData = data;
     }
+
+    public String getSelfReportedString() {
+        return selfReportedData.getReport();
+    }
 }
