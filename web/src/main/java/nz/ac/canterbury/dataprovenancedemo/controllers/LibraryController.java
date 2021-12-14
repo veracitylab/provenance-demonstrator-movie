@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
@@ -67,8 +68,20 @@ public class LibraryController {
         return ResponseEntity.internalServerError().build();
     }
 
+    /**
+     * Handles requests for provenance data for a given ID
+     * @param id ID to obtain provenance data from
+     * @return
+     */
     @GetMapping("/provenance/{id}")
-    ResponseEntity<String> provenanceHandler() {
+    ResponseEntity<String> provenanceHandler(@PathVariable String id) {
+        //TODO: Implementation
+        System.out.println(id);
+
+        Optional<?> test = recommendationService.getProvenanceData(id);
+
+        test.ifPresentOrElse(o -> System.out.println(o), () -> System.out.println("No ID"));
+
         return null;
     }
 }

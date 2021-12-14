@@ -49,7 +49,7 @@ public class RecommendationService {
 
     public Optional<Object> getProvenanceData(String id) {
         if (provenance.containsKey(id)) {
-            return Optional.of(id);
+            return Optional.of(provenance.get(id));
         }
         return Optional.empty();
     }
