@@ -60,7 +60,7 @@ public class LibraryController {
             return ResponseEntity
                     .ok()
                     .header("Provenance-ID", rec.getId())
-                    .body(rec.asJson());
+                    .body(rec.getMoviesAsJson());
         } catch (IOException e) {
             e.printStackTrace();
         }

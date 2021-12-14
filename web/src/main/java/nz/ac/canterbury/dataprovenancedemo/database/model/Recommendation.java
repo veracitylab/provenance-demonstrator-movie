@@ -31,8 +31,8 @@ public class Recommendation {
      * @return String containing the JSON representation of the data
      * @throws IOException If there is an issue serializing the object
      */
-    public String asJson() throws IOException {
+    public String getMoviesAsJson() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
+        return mapper.writeValueAsString(this.movies);
     }
 }
