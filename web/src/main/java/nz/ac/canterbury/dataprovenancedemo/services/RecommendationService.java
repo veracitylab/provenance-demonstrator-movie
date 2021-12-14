@@ -4,7 +4,6 @@ import nz.ac.canterbury.dataprovenancedemo.MovieRecommender;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Recommendation;
 import nz.ac.canterbury.dataprovenancedemo.database.repositories.MovieRepository;
-import nz.ac.canterbury.dataprovenancedemo.provenance.ProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.utils.RecommenderConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +39,7 @@ public class RecommendationService {
         String id = UUID.randomUUID().toString();
         List<Integer> recommendationIds = recommender.getRecommendations(null, 5);
         List<Movie> movies = movieRepository.findMoviesByIds(recommendationIds);
-        ProvenanceData provenanceData = (ProvenanceData) recommender.getProvenanceData();
+        Object provenanceData = recommender.getProvenanceData();
 
         provenance.put(id, provenanceData);
 

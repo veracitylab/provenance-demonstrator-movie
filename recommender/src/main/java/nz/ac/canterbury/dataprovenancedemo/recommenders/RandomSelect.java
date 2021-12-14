@@ -28,6 +28,6 @@ public class RandomSelect extends AbstractMovieRecommender {
 
     @Override
     public Object getProvenanceData() {
-        return null;
+        return "Test of the provenance data return";
     }
 }

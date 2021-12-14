@@ -75,13 +75,10 @@ public class LibraryController {
      */
     @GetMapping("/provenance/{id}")
     ResponseEntity<String> provenanceHandler(@PathVariable String id) {
-        //TODO: Implementation
-        System.out.println(id);
 
-        Optional<?> test = recommendationService.getProvenanceData(id);
+        Optional<?> provenanceData = recommendationService.getProvenanceData(id);
 
-        test.ifPresentOrElse(o -> System.out.println(o), () -> System.out.println("No ID"));
-
-        return null;
+        return provenanceData.map(o -> ResponseEntity.ok(o.toString()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
