@@ -1,4 +1,4 @@
-package nz.ac.canterbury.dataprovenancedemo;
+package nz.ac.canterbury.dataprovenancedemo.provenance;
 
 public class ProvenanceData {
     private SelfReportedProvenanceData selfReportedData;

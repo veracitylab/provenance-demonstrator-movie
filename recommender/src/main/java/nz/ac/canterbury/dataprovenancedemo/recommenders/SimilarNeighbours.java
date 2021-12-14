@@ -1,23 +1,23 @@
 package nz.ac.canterbury.dataprovenancedemo.recommenders;
 
-import nz.ac.canterbury.dataprovenancedemo.MovieRecommender;
-import nz.ac.canterbury.dataprovenancedemo.ProvenanceData;
+import nz.ac.canterbury.dataprovenancedemo.AbstractMovieRecommender;
 
 import java.util.List;
 
-public class SimilarNeighbours implements MovieRecommender {
-    @Override
-    public List<Integer> getRecommendations(Object features) {
-        return null;
-    }
+public class SimilarNeighbours extends AbstractMovieRecommender {
+
+//    @Override
+//    public List<Integer> getRecommendations(Object features, int resultSize) {
+//        return null;
+//    }
+//
+//    @Override
+//    public ProvenanceData getProvenanceData() {
+//        return null;
+//    }
 
     @Override
-    public List<Integer> getRecommendations(Object features, int resultSize) {
-        return null;
-    }
-
-    @Override
-    public ProvenanceData getProvenanceData() {
+    protected List<Integer> algorithm(Object features, int resultSize) {
         return null;
     }
 }

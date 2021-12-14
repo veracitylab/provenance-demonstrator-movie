@@ -1,4 +1,4 @@
-package nz.ac.canterbury.dataprovenancedemo;
+package nz.ac.canterbury.dataprovenancedemo.provenance;
 
 import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmProperty;
 import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmStep;
@@ -6,6 +6,8 @@ import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmStep;
 import java.util.Comparator;
 import java.util.List;
 
+
+//TODO: Change structure to ensure that access modifiers don't leak composites of ProvenanceData
 public class SelfReportedProvenanceData {
     private static final String NO_SPEC = "Not specified";
 

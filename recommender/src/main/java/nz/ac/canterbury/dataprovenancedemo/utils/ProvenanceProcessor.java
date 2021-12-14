@@ -1,14 +1,18 @@
 package nz.ac.canterbury.dataprovenancedemo.utils;
 
 import nz.ac.canterbury.dataprovenancedemo.MovieRecommender;
-import nz.ac.canterbury.dataprovenancedemo.SelfReportedProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.annotations.Algorithm;
 import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmProperty;
 import nz.ac.canterbury.dataprovenancedemo.annotations.AlgorithmStep;
+import nz.ac.canterbury.dataprovenancedemo.provenance.SelfReportedProvenanceData;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * This utility class contains processors for producing self-reported provenance data from annotations in a
+ * recommender's source code.
+ */
 public class ProvenanceProcessor {
 
     protected ProvenanceProcessor() {}
@@ -37,7 +41,7 @@ public class ProvenanceProcessor {
 //        System.out.printf("\tName: %s%n", algorithmName);
 //        System.out.printf("\tDescription: %s%n", algoDescription);
 
-        System.out.println(data.getReport());
+//        System.out.println(data.getReport());
         return data;
     }
 
