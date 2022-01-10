@@ -20,7 +20,7 @@ public class RandomSelect extends AbstractMovieRecommender {
     @Override
     protected List<Integer> algorithm(Object features, int resultSize) {
         Stream<Integer> randomSelection = Stream.generate(
-                () -> RNG.nextInt(17000)
+                () -> RNG.nextInt(100)
         ).limit(resultSize);
 
         return randomSelection.collect(Collectors.toList());

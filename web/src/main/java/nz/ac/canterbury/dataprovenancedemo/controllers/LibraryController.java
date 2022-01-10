@@ -39,7 +39,6 @@ public class LibraryController {
     {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
-
         List<Movie> recommendations = recommendationService.getRecommendations().getMovies();
 
         if (titleSearch.isPresent()) {

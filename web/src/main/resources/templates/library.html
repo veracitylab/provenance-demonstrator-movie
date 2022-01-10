@@ -85,7 +85,7 @@
             <th:block th:each="movieRow: ${movieSubLists}">
                 <div class="card-deck pb-3">
                     <div class="card" th:each="movie: ${movieRow}">
-                        <img class="card-img-top" th:src="${movie.getPosterUrl()}" alt="top of the card">
+                        <img th:src="${movie.getPosterUrl() != null}? ${movie.getPosterUrl()} : @{img/image-not-found.png}" class="card-img-top">
                         <div class="card-body">
                             <h6 class="card-title" th:text="${movie.getTitle()}"></h6>
                             <p class="card-text">
