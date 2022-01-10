@@ -17,10 +17,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
     implementation 'com.h2database:h2'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'com.google.guava:guava:31.0.1-jre'
 
     implementation project(':recommender')
-
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 

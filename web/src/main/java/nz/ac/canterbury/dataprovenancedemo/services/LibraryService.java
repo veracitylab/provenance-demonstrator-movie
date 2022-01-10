@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LibraryService {
-    private static final int DEFAULT_PAGE_SIZE = 100;
+    private static final int DEFAULT_PAGE_SIZE = 20;
 
     private final MovieRepository movieRepository;
 

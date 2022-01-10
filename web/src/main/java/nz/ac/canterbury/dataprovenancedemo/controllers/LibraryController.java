@@ -1,5 +1,6 @@
 package nz.ac.canterbury.dataprovenancedemo.controllers;
 
+import com.google.common.collect.Iterables;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Recommendation;
 import nz.ac.canterbury.dataprovenancedemo.services.LibraryService;
@@ -38,7 +39,8 @@ public class LibraryController {
     {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
-        List<Movie> tempMoveRecommendations = recommendationService.getRecommendations().getMovies();
+
+        List<Movie> recommendations = recommendationService.getRecommendations().getMovies();
 
         if (titleSearch.isPresent()) {
             model.addAttribute("searchTerm", titleSearch.get());
@@ -47,8 +49,13 @@ public class LibraryController {
             moviePage = libraryService.getMovies(currPage);
         }
 
-        model.addAttribute("recommendations", tempMoveRecommendations);
-        model.addAttribute("movies", moviePage);
+        model.addAttribute("totalPages", moviePage.getTotalPages());
+        model.addAttribute("currentPage", moviePage.getNumber());
+
+        model.addAttribute("recommendations", recommendations);
+
+        Iterable<List<Movie>> movieSubLists = Iterables.partition(moviePage, 5);
+        model.addAttribute("movieSubLists", movieSubLists);
 
         return "library";
     }

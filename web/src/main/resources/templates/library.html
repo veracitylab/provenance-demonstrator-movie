@@ -81,38 +81,31 @@
             </div>
         </form>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">Release Year</th>
-                <th sec:authorize="isAuthenticated()">Your Rating</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr th:each="movie: ${movies}">
-                <td th:text="${movie.getId()}"></td>
-                <td th:text="${movie.getTitle()}"></td>
-                <td th:text="${movie.getReleaseYearString()}"></td>
-                <div sec:authorize="isAuthenticated()" th:with="rating=${movie.getUserRating(#authentication.getName())}">
-                    <td th:if="${rating != null}" th:text="${rating.getRating()}"></td>
-                    <td th:if="${rating == null}" th:text="${'Not rated yet'}"></td>
+        <div class="container pt-5">
+            <th:block th:each="movieRow: ${movieSubLists}">
+                <div class="card-deck pb-3">
+                    <div class="card" th:each="movie: ${movieRow}">
+                        <img class="card-img-top" th:src="${movie.getPosterUrl()}" alt="top of the card">
+                        <div class="card-body">
+                            <h6 class="card-title" th:text="${movie.getTitle()}"></h6>
+                            <p class="card-text">
+                                <small class="text-muted" th:text="${'Released: ' + movie.getReleaseYearString()}"></small>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </tr>
-            </tbody>
-        </table>
+            </th:block>
+        </div>
 
-        <nav aria-label="Movie page navigation" th:if="${movies.getTotalPages() > 1}">
+        <nav aria-label="Movie page navigation" th:if="${totalPages > 1}">
             <ul class="pagination justify-content-center">
                 <!-- Enable/disable previous button if pagination is at the start -->
-                <li class="page-item disabled" th:if="${movies.getNumber() == 0}">
+                <li class="page-item disabled" th:if="${currentPage == 0}">
                     <a class="page-link">Previous</a>
                 </li>
-                <li class="page-item" th:if="${movies.getNumber() != 0}">
-                    <a class="page-link" th:href="@{/library(page=${movies.getNumber()})}" th:if="${searchTerm == null}">Previous</a>
-                    <a class="page-link" th:href="@{/library(page=${movies.getNumber()},title=${searchTerm})}" th:if="${searchTerm != null}">Previous</a>
+                <li class="page-item" th:if="${currentPage != 0}">
+                    <a class="page-link" th:href="@{/library(page=${currentPage})}" th:if="${searchTerm == null}">Previous</a>
+                    <a class="page-link" th:href="@{/library(page=${currentPage},title=${searchTerm})}" th:if="${searchTerm != null}">Previous</a>
                 </li>
 
                 <form method="get" action="/library">
@@ -120,10 +113,10 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text">Page</div>
                         </div>
-                        <input type="number" class="form-control" name="page" th:value="${movies.getNumber() + 1}">
+                        <input type="number" class="form-control" name="page" th:value="${currentPage + 1}">
                         <input type="hidden" name="title" th:if="${searchTerm != null}" th:value="${searchTerm}">
                         <div class="input-group-append">
-                            <div class="input-group-text" th:text="${'of ' + movies.getTotalPages()}"></div>
+                            <div class="input-group-text" th:text="${'of ' + totalPages}"></div>
                         </div>
                     </div>
                 </form>
@@ -131,13 +124,13 @@
 
                 <!-- Enable/disable next button if pagination is at the end -->
 
-                <li class="page-item disabled" th:if="${movies.getNumber() + 1 == movies.getTotalPages()}">
+                <li class="page-item disabled" th:if="${currentPage + 1 == totalPages}">
                     <a class="page-link">Next</a>
                 </li>
 
-                <li class="page-item" th:if="${movies.getNumber() + 1 != movies.getTotalPages()}">
-                    <a class="page-link" th:href="@{/library(page=${movies.getNumber() + 2})}" th:if="${searchTerm == null}">Next</a>
-                    <a class="page-link" th:href="@{/library(page=${movies.getNumber() + 2},title=${searchTerm})}" th:if="${searchTerm != null}">Next</a>
+                <li class="page-item" th:if="${currentPage + 1 != totalPages}">
+                    <a class="page-link" th:href="@{/library(page=${currentPage + 2})}" th:if="${searchTerm == null}">Next</a>
+                    <a class="page-link" th:href="@{/library(page=${currentPage + 2},title=${searchTerm})}" th:if="${searchTerm != null}">Next</a>
                 </li>
             </ul>
         </nav>
