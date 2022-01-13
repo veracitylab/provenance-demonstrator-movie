@@ -5,146 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse library</title>
 
-    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{css/styles.css}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="d-flex flex-grow-1">
-            <span class="w-100 d-lg-none d-block"></span>
-            <a class="navbar-brand" href="/">
-                Movie Recommender - With transparency!
-            </a>
-            <div class="w-100 text-right">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#indexnav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="d-flex flex-grow-1">
+        <span class="w-100 d-lg-none d-block"></span>
+        <a class="navbar-brand" href="/">
+            Movie Recommender - With transparency!
+        </a>
+        <div class="w-100 text-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#indexnav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-        <div class="collapse navbar-collapse flex-grow-1 text-right" id="indexnav">
-            <ul class="navbar-nav ml-auto flex-nowrap">
-                <li class="nav-item">
-                    <a href="/" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">View Library</a>
-                </li>
-                <li sec:authorize="isAnonymous()" class="nav-item">
-                    <a href="/" class="nav-link">Login</a>
-                </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" th:text="${'Hi ' + #authentication.getName()}"></a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a class="dropdown-item" href="#">View watch history</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><div class="dropdown-divider"></div></li>
-                        <li>
-                            <form th:action="@{/logout}" method="post">
-                                <button class="dropdown-item btn btn-outline-danger" type="submit">Logout</button>
-                            </form>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    </div>
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="indexnav">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+            <li class="nav-item">
+                <a href="/" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">Library</a>
+            </li>
+            <li sec:authorize="isAnonymous()" class="nav-item">
+                <a href="/" class="nav-link">Login</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" th:text="${'Hi ' + #authentication.getName()}"></a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a class="dropdown-item" href="#">View watch history</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <button class="dropdown-item btn btn-outline-danger" type="submit">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-    <div class="container">
-        <h1 class="header text-center">Browse movies here!</h1>
+<div class="modal fade" id="movieDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img id="movieDetailImage" th:src="@{img/image-not-found.png}" class="img-fluid">
+                        </div>
 
-        <!-- TODO: Move this to an authenticated block -->
-        <h3 class="text-left">Recommended</h3>
-        <table class="table" th:if="${recommendations != null || recommendations.size() > 1}">
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">Release year</th>
-            </tr>
-            </thead>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 id="movieDetailTitle" class="modal-title">Movie name</h3>
+                                    <p><small id="movieDetailRelease" class="text-muted">Release year</small></p>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Ut diam quam nulla porttitor massa id neque.
+                                    </p>
+                                </div>
+                                <div class="col-1">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
 
-            <tbody>
-            <tr th:each="movie: ${recommendations}">
-                <td th:text="${movie.getId()}"></td>
-                <td th:text="${movie.getTitle()}"></td>
-                <td th:text="${movie.getReleaseYearString()}"></td>
-            </tr>
-            </tbody>
-        </table>
+                            <div sec:authorize="isAuthenticated()" class="row">
+                                <div class="col">
+                                    <h6 id="movieDetailRating">Your rating: </h6>
+                                </div>
+                                <div class="col">
+                                    <form id="rating-form">
+                                        <div class="rating">
+                                            <input type="radio" name="rating" id="rt-5" value="5">
+                                            <label for="rt-5"><i class="fa fa-star"></i></label>
 
+                                            <input type="radio" name="rating" id="rt-4" value="4">
+                                            <label for="rt-4"><i class="fa fa-star"></i></label>
 
-        <h3 class="text-left">Catalogue</h3>
-        <form method="get" action="/library">
-            <div class="input-group">
-                <input type="search" class="form-control rounded" placeholder="Search title" name="title">
-                <button type="submit" class="btn btn-outline-primary">Search</button>
-                <button type="button" class="btn btn-outline-danger" onclick="window.location.href='/library';">Clear</button>
-            </div>
-        </form>
+                                            <input type="radio" name="rating" id="rt-3" value="3">
+                                            <label for="rt-3"><i class="fa fa-star"></i></label>
 
-        <div class="container pt-5">
-            <th:block th:each="movieRow: ${movieSubLists}">
-                <div class="card-deck pb-3">
-                    <div class="card" th:each="movie: ${movieRow}">
-                        <img th:src="${movie.getPosterUrl() != null}? ${movie.getPosterUrl()} : @{img/image-not-found.png}" class="card-img-top">
-                        <div class="card-body">
-                            <h6 class="card-title" th:text="${movie.getTitle()}"></h6>
-                            <p class="card-text">
-                                <small class="text-muted" th:text="${'Released: ' + movie.getReleaseYearString()}"></small>
-                            </p>
+                                            <input type="radio" name="rating" id="rt-2" value="2">
+                                            <label for="rt-2"><i class="fa fa-star"></i></label>
+
+                                            <input type="radio" name="rating" id="rt-1" value="1">
+                                            <label for="rt-1"><i class="fa fa-star"></i></label>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </th:block>
+            </div>
         </div>
+    </div>
+</div>
 
-        <nav aria-label="Movie page navigation" th:if="${totalPages > 1}">
-            <ul class="pagination justify-content-center">
-                <!-- Enable/disable previous button if pagination is at the start -->
-                <li class="page-item disabled" th:if="${currentPage == 0}">
-                    <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item" th:if="${currentPage != 0}">
-                    <a class="page-link" th:href="@{/library(page=${currentPage})}" th:if="${searchTerm == null}">Previous</a>
-                    <a class="page-link" th:href="@{/library(page=${currentPage},title=${searchTerm})}" th:if="${searchTerm != null}">Previous</a>
-                </li>
+<div class="container">
+    <h3 class="text-left">Catalogue</h3>
+    <form method="get" action="/library">
+        <div class="input-group">
+            <input type="search" class="form-control rounded" placeholder="Search title" name="title">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+            <button type="button" class="btn btn-outline-danger" onclick="window.location.href='/library';">Clear</button>
+        </div>
+    </form>
 
-                <form method="get" action="/library">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Page</div>
-                        </div>
-                        <input type="number" class="form-control" name="page" th:value="${currentPage + 1}">
-                        <input type="hidden" name="title" th:if="${searchTerm != null}" th:value="${searchTerm}">
-                        <div class="input-group-append">
-                            <div class="input-group-text" th:text="${'of ' + totalPages}"></div>
-                        </div>
+    <div class="container pt-5">
+        <th:block th:each="movieRow: ${movieSubLists}">
+            <div class="card-deck pb-3">
+                <div class="card zoom" th:each="movie: ${movieRow}" th:onclick="'queryMovieDetail(\'' + ${movie.getId()} +'\');'">
+                    <img th:src="${movie.getPosterUrl() != null}? ${movie.getPosterUrl()} : @{img/image-not-found.png}" class="card-img-top">
+                    <div class="card-body">
+                        <h6 class="card-title" th:text="${movie.getTitle()}"></h6>
+                        <p class="card-text">
+                            <small class="text-muted" th:text="${'Released: ' + movie.getReleaseYearString()}"></small>
+                        </p>
                     </div>
-                </form>
-
-
-                <!-- Enable/disable next button if pagination is at the end -->
-
-                <li class="page-item disabled" th:if="${currentPage + 1 == totalPages}">
-                    <a class="page-link">Next</a>
-                </li>
-
-                <li class="page-item" th:if="${currentPage + 1 != totalPages}">
-                    <a class="page-link" th:href="@{/library(page=${currentPage + 2})}" th:if="${searchTerm == null}">Next</a>
-                    <a class="page-link" th:href="@{/library(page=${currentPage + 2},title=${searchTerm})}" th:if="${searchTerm != null}">Next</a>
-                </li>
-            </ul>
-        </nav>
+                </div>
+            </div>
+        </th:block>
     </div>
 
-</body>
+    <nav aria-label="Movie page navigation" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <!-- Enable/disable previous button if pagination is at the start -->
+            <li class="page-item disabled" th:if="${currentPage == 0}">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item" th:if="${currentPage != 0}">
+                <a class="page-link" th:href="@{/library(page=${currentPage})}" th:if="${searchTerm == null}">Previous</a>
+                <a class="page-link" th:href="@{/library(page=${currentPage},title=${searchTerm})}" th:if="${searchTerm != null}">Previous</a>
+            </li>
+
+            <form method="get" action="/library">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Page</div>
+                    </div>
+                    <input type="number" class="form-control" name="page" th:value="${currentPage + 1}">
+                    <input type="hidden" name="title" th:if="${searchTerm != null}" th:value="${searchTerm}">
+                    <div class="input-group-append">
+                        <div class="input-group-text" th:text="${'of ' + totalPages}"></div>
+                    </div>
+                </div>
+            </form>
+
+
+            <!-- Enable/disable next button if pagination is at the end -->
+
+            <li class="page-item disabled" th:if="${currentPage + 1 == totalPages}">
+                <a class="page-link">Next</a>
+            </li>
+
+            <li class="page-item" th:if="${currentPage + 1 != totalPages}">
+                <a class="page-link" th:href="@{/library(page=${currentPage + 2})}" th:if="${searchTerm == null}">Next</a>
+                <a class="page-link" th:href="@{/library(page=${currentPage + 2},title=${searchTerm})}" th:if="${searchTerm != null}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
 
 <script th:src="@{js/jquery-3.6.0.min.js}"></script>
 <script th:src="@{js/bootstrap.bundle.min.js}"></script>
-
-<script>
-    function navigationForm(form) {
-        console.log("jeff")
-    }
-</script>
-
+<script th:src="@{js/library.js}"></script>
+</body>
 </html>

@@ -2,6 +2,7 @@ package nz.ac.canterbury.dataprovenancedemo.controllers;
 
 import com.google.common.collect.Iterables;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
+import nz.ac.canterbury.dataprovenancedemo.database.model.Rating;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Recommendation;
 import nz.ac.canterbury.dataprovenancedemo.services.LibraryService;
 import nz.ac.canterbury.dataprovenancedemo.services.RecommendationService;
@@ -12,11 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,6 @@ public class LibraryController {
     {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
-        List<Movie> recommendations = recommendationService.getRecommendations().getMovies();
 
         if (titleSearch.isPresent()) {
             model.addAttribute("searchTerm", titleSearch.get());
@@ -48,15 +48,49 @@ public class LibraryController {
             moviePage = libraryService.getMovies(currPage);
         }
 
+        Iterable<List<Movie>> movieSubLists = Iterables.partition(moviePage, 5);
+
         model.addAttribute("totalPages", moviePage.getTotalPages());
         model.addAttribute("currentPage", moviePage.getNumber());
-
-        model.addAttribute("recommendations", recommendations);
-
-        Iterable<List<Movie>> movieSubLists = Iterables.partition(moviePage, 5);
         model.addAttribute("movieSubLists", movieSubLists);
 
         return "library";
+    }
+
+    @GetMapping("/movie/{movieId}")
+    public ResponseEntity<Movie> movieDetail(HttpServletRequest request, @PathVariable(value="movieId") int id) {
+        Optional<Movie> movie = libraryService.getMovie(id);
+        Principal principal = request.getUserPrincipal();
+
+        if (movie.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Movie movieDetail = movie.get();
+
+        if (principal != null) {
+            movieDetail.populateRating(principal.getName());
+        }
+
+        return ResponseEntity.ok().body(movieDetail);
+    }
+
+    @PutMapping(value = "/movie/rate")
+    public ResponseEntity<String> rateMovie(HttpServletRequest request, @RequestBody String data) {
+        Principal principal = request.getUserPrincipal();
+        if (principal == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        // JSON coverter was busted for some reason, enjoy this member here.
+        String[] d = data.split("&");
+        int movieId = Integer.parseInt(d[0].split("=")[1]);
+        int stars = Integer.parseInt(d[1].split("=")[1]);
+
+        Rating rating = new Rating(principal.getName(), movieId, stars);
+
+        libraryService.rateMovie(rating);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/recommendations")

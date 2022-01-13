@@ -1,0 +1,27 @@
+.zoom {
+    transition: transform 200ms;
+}
+
+.zoom:hover {
+    transform: scale(1.05);
+}
+
+
+/* Stuff for the rating stars */
+
+.rating {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    color: #ddd;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked + label,
+.rating input:checked + label ~ label {
+    color: #ffbe00;
+}

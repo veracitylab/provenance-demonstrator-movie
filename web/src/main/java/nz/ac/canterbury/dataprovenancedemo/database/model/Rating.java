@@ -21,6 +21,12 @@ public class Rating {
 
     protected Rating() {}
 
+    public Rating(String username, int movieId, int rating) {
+        this.username = username;
+        this.movieId = movieId;
+        this.rating = rating;
+    }
+
     protected String getUsername() {
         return username;
     }

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "Movies")
@@ -27,6 +28,9 @@ public class Movie {
     @OneToMany
     @JoinColumn(name = "movie_id", referencedColumnName = "id")
     private List<Rating> ratings;
+
+    @Transient
+    private Optional<Integer> populatedRating;
 
     protected Movie() {}
 
@@ -57,10 +61,21 @@ public class Movie {
         return genres;
     }
 
+    public Optional<Integer> getPopulatedRating() {
+        return populatedRating;
+    }
+
     public Rating getUserRating(String username) {
         return this.ratings.stream()
                 .filter(rating -> rating.getUsername().equals(username))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void populateRating(String username) {
+        this.ratings.stream()
+                .filter(rating -> rating.getUsername().equals(username))
+                .findFirst()
+                .ifPresent(r -> this.populatedRating = Optional.of(r.getRating()));
     }
 }
