@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class LibraryController {
@@ -81,7 +82,7 @@ public class LibraryController {
             return ResponseEntity.status(401).build();
         }
 
-        // JSON coverter was busted for some reason, enjoy this tasty member here.
+        // JSON converter was busted for some reason, enjoy this tasty member here.
         String[] d = data.split("&");
         int movieId = Integer.parseInt(d[0].split("=")[1]);
         int stars = Integer.parseInt(d[1].split("=")[1]);
@@ -92,6 +93,13 @@ public class LibraryController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Obtains a list of recommendations and formats them into a thymeleaf fragment for use
+     * on the demo site
+     * @param model Spring MVC model
+     * @param request Contains user authentication for custom recommendations
+     * @return HTML content of the recommendation list
+     */
     @GetMapping("/recommendations")
     public String libraryRecommendationPage(Model model, HttpServletRequest request) {
         // For customised recommendations
@@ -104,28 +112,31 @@ public class LibraryController {
         return "recommendations";
     }
 
-//    @GetMapping("/json/recommendations")
-//    ResponseEntity<String> libraryRecommendations() {
-//
-//        List<Recommendation> rec = recommendationService.getRecommendations();
-//        try {
-//            return ResponseEntity
-//                    .ok()
-//                    .header("Provenance-ID", rec.getId())
-//                    .body(rec.getMoviesAsJson());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return ResponseEntity.internalServerError().build();
-//    }
+    /**
+     * Provides a list of recommendations as JSON
+     * @param request Contains user authentication for custom recommendations
+     * @return JSON array of recommendations
+     */
+    @GetMapping("/recommendations.json")
+    public ResponseEntity<List<Movie>> libraryRecommendations(HttpServletRequest request) {
+
+        List<Recommendation> rec = recommendationService.getRecommendations();
+        List<Movie> movies = rec.stream().map(Recommendation::getMovie).collect(Collectors.toList());
+        String provId = !rec.isEmpty() ? rec.get(0).getId() : null;
+
+        return ResponseEntity
+                .ok()
+                .header("Provenance-ID", provId)
+                .body(movies);
+    }
 
     /**
      * Handles requests for provenance data for a given ID
      * @param id ID to obtain provenance data from
-     * @return
+     * @return String representation of the provenance information assosciated with a request
      */
     @GetMapping("/provenance/{id}")
-    ResponseEntity<String> provenanceHandler(@PathVariable String id) {
+    public ResponseEntity<String> provenanceHandler(@PathVariable String id) {
 
         Optional<?> provenanceData = recommendationService.getProvenanceData(id);
 

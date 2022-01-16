@@ -3,7 +3,8 @@
 <div class="container">
     <th:block th:each="recRow: ${recommendationGroups}">
         <div class="card-deck pb-3">
-            <div class="card zoom" th:each="rec: ${recRow}" th:with="movie=${rec.getMovie()}">
+            <!-- This element right here is cursed beyond all definitions of cursed -->
+            <div class="card zoom" th:each="rec: ${recRow}" th:with="movie=${rec.getMovie()}" th:data-provId="${rec.getId()}"  th:onclick="'queryMovieDetail(\'' + ${movie.getId()} + '\', this.getAttribute(\'data-provId\'));'">
                 <img th:src="${movie.getPosterUrl() != null}? ${movie.getPosterUrl()} : @{img/image-not-found.png}" class="card-img-top">
                 <div class="card-body">
                     <h6 class="card-title" th:text="${movie.getTitle()}"></h6>

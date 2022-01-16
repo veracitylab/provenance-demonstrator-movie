@@ -38,16 +38,21 @@ function rateMovie(movieId, rating) {
 
 /**
  * Query movie details from movie ID, assume response is using JSON
- * @param movieId
+ * @param movieId ID of the movie to query
+ * @param provenanceId ID of the provenance information associated with a movie
  */
-function queryMovieDetail(movieId) {
+function queryMovieDetail(movieId, provenanceId=null) {
     // Set the ID of the object for later use
     $('#movieDetailModal').prop('movieId', movieId);
+
+    console.log(provenanceId);
 
     $.ajax({
         type: "GET",
         url: `/movie/${movieId}`,
-        success: displayMovieDetail,
+        success: function(movieData) {
+            displayMovieDetail(movieData, provenanceId)
+        },
         error: console.error
     })
 }
@@ -55,8 +60,9 @@ function queryMovieDetail(movieId) {
 /**
  * Coverts JSON data into items that can be displayed
  * @param movieData
+ * @param provenanceId
  */
-function displayMovieDetail(movieData) {
+function displayMovieDetail(movieData, provenanceId=null) {
     let title = movieData['title'];
     let release = movieData['releaseYear'];
     let imgUrl = movieData['posterUrl'];
