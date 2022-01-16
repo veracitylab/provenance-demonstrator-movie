@@ -21,7 +21,7 @@ public class Recommendation {
         return this.id;
     }
 
-    public Movie getMovies() {
+    public Movie getMovie() {
         return this.movie;
     }
 

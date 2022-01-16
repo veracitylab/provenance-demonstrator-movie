@@ -93,11 +93,13 @@ public class LibraryController {
     }
 
     @GetMapping("/recommendations")
-    public String libraryRecommendationPage(HttpServletRequest request) {
+    public String libraryRecommendationPage(Model model, HttpServletRequest request) {
         // For customised recommendations
         Principal principal = request.getUserPrincipal();
 
-        List<Recommendation> rec = recommendationService.getRecommendations();
+        List<Recommendation> recommendations = recommendationService.getRecommendations();
+        Iterable<List<Recommendation>> recommendationSubLists = Iterables.partition(recommendations, 5);
+        model.addAttribute("recommendationGroups", recommendationSubLists);
 
         return "recommendations";
     }

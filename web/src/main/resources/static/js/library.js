@@ -14,6 +14,8 @@ $(document).ready(function () {
         let movieId = movieDetailModal.prop('movieId');
         rateMovie(movieId, rating);
     });
+
+    getRecommendations();
 });
 
 /**
@@ -66,3 +68,17 @@ function displayMovieDetail(movieData) {
     $("#movieDetailModal").modal('show');
 }
 
+/**
+ * Function to extract the movie recommendations
+ */
+function getRecommendations() {
+    $.ajax({
+        type: "GET",
+        url: "/recommendations",
+        success: function(html) {
+            console.log(html);
+            $('#recommendations').replaceWith(html);
+        },
+        error: console.error
+    })
+}
