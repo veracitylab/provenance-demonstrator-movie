@@ -72,6 +72,10 @@ function displayMovieDetail(movieData, provenanceId=null) {
     $('#movieDetailRelease').text(`Released: ${release.split("-")[0]}`);
     $('#movieDetailImage').prop('src', (imgUrl != null) ? imgUrl : "/img/image-not-found.png");
     $("#movieDetailModal").modal('show');
+
+    if (rating != null) {
+        $(`#rate-${rating}`).prop('checked', true);
+    }
 }
 
 /**
@@ -81,9 +85,8 @@ function getRecommendations() {
     $.ajax({
         type: "GET",
         url: "/recommendations",
-        success: function(html) {
-            console.log(html);
-            $('#recommendations').replaceWith(html);
+        success: function(resBody) {
+            $('#recommendations').replaceWith(resBody);
         },
         error: console.error
     })
