@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RecommendationService {
@@ -34,7 +35,7 @@ public class RecommendationService {
         recommender = RecommenderConfiguration.getRecommender(recommendationMethod);
     }
 
-    public Recommendation getRecommendations() {
+    public List<Recommendation> getRecommendations() {
 
         String id = UUID.randomUUID().toString();
         List<Integer> recommendationIds = recommender.getRecommendations(null, 5);
@@ -43,7 +44,7 @@ public class RecommendationService {
 
         provenance.put(id, provenanceData);
 
-        return new Recommendation(id, movies);
+        return movies.stream().map(m -> new Recommendation(id, m)).collect(Collectors.toList());
     }
 
     public Optional<Object> getProvenanceData(String id) {

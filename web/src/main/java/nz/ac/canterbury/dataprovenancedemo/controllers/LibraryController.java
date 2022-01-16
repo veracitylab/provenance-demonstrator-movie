@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +81,7 @@ public class LibraryController {
             return ResponseEntity.status(401).build();
         }
 
-        // JSON coverter was busted for some reason, enjoy this member here.
+        // JSON coverter was busted for some reason, enjoy this tasty member here.
         String[] d = data.split("&");
         int movieId = Integer.parseInt(d[0].split("=")[1]);
         int stars = Integer.parseInt(d[1].split("=")[1]);
@@ -94,19 +93,29 @@ public class LibraryController {
     }
 
     @GetMapping("/recommendations")
-    ResponseEntity<String> libraryRecommendations() {
+    public String libraryRecommendationPage(HttpServletRequest request) {
+        // For customised recommendations
+        Principal principal = request.getUserPrincipal();
 
-        Recommendation rec = recommendationService.getRecommendations();
-        try {
-            return ResponseEntity
-                    .ok()
-                    .header("Provenance-ID", rec.getId())
-                    .body(rec.getMoviesAsJson());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.internalServerError().build();
+        List<Recommendation> rec = recommendationService.getRecommendations();
+
+        return "recommendations";
     }
+
+//    @GetMapping("/json/recommendations")
+//    ResponseEntity<String> libraryRecommendations() {
+//
+//        List<Recommendation> rec = recommendationService.getRecommendations();
+//        try {
+//            return ResponseEntity
+//                    .ok()
+//                    .header("Provenance-ID", rec.getId())
+//                    .body(rec.getMoviesAsJson());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return ResponseEntity.internalServerError().build();
+//    }
 
     /**
      * Handles requests for provenance data for a given ID

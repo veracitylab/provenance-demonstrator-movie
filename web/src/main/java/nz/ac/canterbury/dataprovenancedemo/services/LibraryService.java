@@ -47,6 +47,10 @@ public class LibraryService {
         return movieRepository.findMovieByTitleContainingIgnoreCase(title, PageRequest.of(pageNum, DEFAULT_PAGE_SIZE));
     }
 
+    /**
+     * Inserts a given rating into the database
+     * @param rating The rating with relevant information to be inserted
+     */
     public void rateMovie(Rating rating) {
         ratingRepository.save(rating);
     }

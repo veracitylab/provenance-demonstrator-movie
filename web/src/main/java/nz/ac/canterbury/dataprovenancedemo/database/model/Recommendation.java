@@ -3,7 +3,6 @@ package nz.ac.canterbury.dataprovenancedemo.database.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * POJO object to return to client for JSON parsing
@@ -11,19 +10,19 @@ import java.util.List;
 public class Recommendation {
 
     private final String id;
-    private final List<Movie> movies;
+    private final Movie movie;
 
-    public Recommendation(String id, List<Movie> movies) {
+    public Recommendation(String id, Movie movies) {
         this.id = id;
-        this.movies = movies;
+        this.movie = movies;
     }
 
     public String getId() {
         return this.id;
     }
 
-    public List<Movie> getMovies() {
-        return this.movies;
+    public Movie getMovies() {
+        return this.movie;
     }
 
     /**
@@ -31,8 +30,8 @@ public class Recommendation {
      * @return String containing the JSON representation of the data
      * @throws IOException If there is an issue serializing the object
      */
-    public String getMoviesAsJson() throws IOException {
+    public String getMovieAsJson() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this.movies);
+        return mapper.writeValueAsString(this.movie);
     }
 }
