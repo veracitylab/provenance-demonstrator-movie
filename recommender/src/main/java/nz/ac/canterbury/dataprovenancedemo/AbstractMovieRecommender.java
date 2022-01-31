@@ -1,6 +1,5 @@
 package nz.ac.canterbury.dataprovenancedemo;
 
-import nz.ac.canterbury.dataprovenancedemo.provenance.ProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.provenance.SelfReportedProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.utils.ProvenanceProcessor;
 
@@ -26,7 +25,8 @@ public abstract class AbstractMovieRecommender implements MovieRecommender {
     @Override
     public Object getProvenanceData() {
         SelfReportedProvenanceData srd = ProvenanceProcessor.process(this);
-        return new ProvenanceData(srd);
+//        return new ProvenanceData(srd);
+        return null;
     }
 
     protected abstract List<Integer> algorithm(Object features, int resultSize);

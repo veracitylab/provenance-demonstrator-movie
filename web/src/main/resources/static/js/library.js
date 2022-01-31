@@ -5,6 +5,9 @@ $(document).ready(function () {
     // Event listener to clear ratings when modal is closed
     movieDetailModal.on('hide.bs.modal', function() {
         $('[name="rating"]').prop('checked', false);
+        $('#provenanceRow').prop('hidden', true);
+        $('#provenanceBtn').removeProp('provId');
+        $('#provenanceDataContainer').prop('hidden', true);
         movieDetailModal.removeProp('movieId');
     })
 
@@ -45,8 +48,6 @@ function queryMovieDetail(movieId, provenanceId=null) {
     // Set the ID of the object for later use
     $('#movieDetailModal').prop('movieId', movieId);
 
-    console.log(provenanceId);
-
     $.ajax({
         type: "GET",
         url: `/movie/${movieId}`,
@@ -76,6 +77,11 @@ function displayMovieDetail(movieData, provenanceId=null) {
     if (rating != null) {
         $(`#rate-${rating}`).prop('checked', true);
     }
+
+    if(provenanceId != null) {
+        $('#provenanceRow').prop('hidden', false);
+        $('#provenanceBtn').prop('provId', provenanceId);
+    }
 }
 
 /**
@@ -87,6 +93,22 @@ function getRecommendations() {
         url: "/recommendations",
         success: function(resBody) {
             $('#recommendations').replaceWith(resBody);
+        },
+        error: console.error
+    })
+}
+
+function provenanceDisplay() {
+    let provId = $('#provenanceBtn').prop('provId');
+
+    $.ajax({
+        type: "GET",
+        url: `/provenance/${provId}`,
+        success: function(data) {
+            let dBox = $('#provenanceData');
+            dBox.text(data);
+            $('#provenanceDataContainer').prop('hidden', false);
+            console.log(data);
         },
         error: console.error
     })

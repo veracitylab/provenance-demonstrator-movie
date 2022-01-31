@@ -77,7 +77,7 @@
                             </div>
 
                             <div sec:authorize="isAuthenticated()" class="row">
-                                <div class="col">
+                                <div class="col-4">
                                     <h6 id="movieDetailRating">Your rating: </h6>
                                 </div>
                                 <div class="col">
@@ -99,10 +99,17 @@
                                             <label for="rate-1"><i class="fa fa-star"></i></label>
                                         </div>
                                     </form>
-
                                 </div>
                             </div>
+                            <div id="provenanceRow" class="col text-right" hidden>
+                                <button id="provenanceBtn" class="btn btn-outline-primary" onclick="provenanceDisplay()">
+                                    Why was this recommended?
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                    <div id="provenanceDataContainer" class="row mt-3" hidden>
+                        <pre id="provenanceData" class="col p-2 border border-info rounded"></pre>
                     </div>
                 </div>
             </div>
