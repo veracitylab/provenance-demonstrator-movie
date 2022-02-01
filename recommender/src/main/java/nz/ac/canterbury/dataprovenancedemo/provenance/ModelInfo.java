@@ -1,11 +1,12 @@
 package nz.ac.canterbury.dataprovenancedemo.provenance;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
  * A POJO class describing a generated model used by the recommendation algorithm
  */
-public class ModelInfo {
+public class ModelInfo implements Serializable {
 
     /**
      * A list of the steps used to generate the model
