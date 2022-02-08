@@ -2,6 +2,11 @@ repositories {
     mavenCentral()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 dependencies {
     implementation 'nz.ac.waikato.cms.weka:weka-stable:3.8.5'
     testImplementation 'junit:junit:4.13'
