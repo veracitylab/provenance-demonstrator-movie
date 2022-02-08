@@ -1,10 +1,18 @@
+import os
 from time import sleep
+from typing import Union
 
 import pandas as pd
 import requests
 
 
 def load_movies(path: str) -> pd.DataFrame:
+    """
+    Loads movie information provided by the path string. Currently use windows encoding as that is what is used by the
+    dataset
+    :param path: Path to the movies data file
+    :return: DataFrame (implicit index) of the loaded movies
+    """
     df = pd.read_csv(path,
                      index_col=0,
                      names=['ID', 'RELEASE', 'TITLE'],
@@ -13,14 +21,20 @@ def load_movies(path: str) -> pd.DataFrame:
     return df
 
 
-def write_movies_sql(df: pd.DataFrame, limit: int) -> None:
+def write_movies_sql(df: pd.DataFrame, limit: int):
+    """
+    Converts a dataframe into SQL statements to be written to disk for database insertion
+    :param df: Dataframe to extract movie information from
+    :param limit: Set a limit on the number of movies to write SQL statements for
+    """
+
     t_name = "MOVIES"
     t_cols = "(id, title, release_year, poster_url)"
     t_cols_no_img = "(id, title, release_year)"
-    sql_str = ""
+    filename = r"output/movies.sql"
 
-    with open('movies.sql', 'w') as file:
-        lines = []
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    with open(filename, 'w') as file:
         df['RELEASE'] = pd.to_datetime(df['RELEASE'], format="%Y-%m-%d")
         for i, e in df.iterrows():
             if i.__eq__(limit):
@@ -38,38 +52,15 @@ def write_movies_sql(df: pd.DataFrame, limit: int) -> None:
             file.write(stmt)
 
 
-def load_data(path: str, limit: int) -> dict:
-    d = {}
-    with open(path, 'r') as file:
-        lines = file.read().splitlines()
-        curr_id = None
-        for line in lines:
-            if line[-1] == ":":
-                # last character is colon which indicates movie title
-                # print(int(line[:-1]))
-                curr_id = int(line[:-1])
+def perform_img_query(title: str) -> Union[str, None]:
+    """
+    Performs a query using IMDB public API to find the title of a movie, and then uses the URL for IMDB posters
+    to find the poster information. The API has a request limit per second so a timeout is used to get the URL once
+    this limit is hit
+    :param title: Title to search for
+    :return: URL of the poster found for the given title
+    """
 
-                if curr_id == limit:
-                    break
-
-                d[curr_id] = []
-            else:
-                # Strip the rating date for now
-                e = line.split(',')
-                d[curr_id].append(",".join(e[:-1]))
-                pass
-
-    with open('ratings_%s.csv' % limit, "w") as file:
-        for k, v in d.items():
-            for r in v:
-                file.write("%s,%s\n" % (k, r))
-
-        print("bp")
-
-    return d
-
-
-def perform_img_query(title: str):
     base_url = r'https://v2.sg.media-imdb.com/suggestion/'
     retries = 5
 
@@ -78,17 +69,18 @@ def perform_img_query(title: str):
     query_url = base_url + title[0] + "/" + title.replace(" ", "-") + ".json"
     res = None
 
-    for x in range(0, retries):
+    # Retry for n times
+    for _ in range(0, retries):
         sleep_time = 1
-        error = None
+
         try:
             res = requests.get(query_url)
             error = None
         except Exception as e:
             error = str(e)
-            pass
 
         if error:
+            print("Error encountered: %s\nRetrying..." % error)
             sleep(sleep_time)
             sleep_time *= 2
         else:
@@ -110,7 +102,6 @@ def perform_img_query(title: str):
     if len(images) > 0:
         if "i" in images[0].keys():
             first = images[0]["i"]["imageUrl"]
-            print(first)
             return first
         else:
             print("No image found for: " + title)
@@ -118,16 +109,13 @@ def perform_img_query(title: str):
 
 
 def main():
-    movie_path = r"data/movie_titles.csv"
-    data_1_path = r"data/combined_data_1.txt"
-    # movies_frame = load_movies(movie_path)
+    # Constants
+    limit = 100
+    movie_title_path = r"dataset/movie_titles.csv"
 
-    # write_movies_sql(movies_frame, 1000)
-
-    load_data(data_1_path, 100)
-
-    # print(movies_frame)
-    print("bp")
+    # Uncomment these lines to generate SQL for the loaded movie titles and their URL's
+    movies_frame = load_movies(movie_title_path)
+    write_movies_sql(movies_frame, limit)
 
 
 if __name__ == "__main__":
