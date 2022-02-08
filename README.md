@@ -22,4 +22,31 @@ requires no setup to build and run.
 ## Running the application
 The application is buildable with Gradle and requires JDK 11 at least to build and run. The following command will build
 and run the application:
+
 ```./gradlew bootRun```
+
+The application can be accessed [in your browser](http://localhost:8080) at http://localhost:8080.
+
+
+## Using the application
+The application can be used without the need to login, and the recommendations produced will contain provenance 
+information when viewing the library. There are also three dummy accounts that have been pre-loaded with ratings to 
+demonstrate provenance information for different users. The login details are as follows:
+```
+USERNAME:PASSWORD
+
+jens:password
+matthias:password
+sam:password
+```
+
+
+## Additional information
+There are several python scripts in the data-analysis directory that are used for creating SQL files and models that
+are used by the recommender module. The details of these scripts are in [this documentation](data-analysis/README.md).
+
+
+## Credits
+Matthias Galster
+Jens Dietrich
+Sam Shankland
