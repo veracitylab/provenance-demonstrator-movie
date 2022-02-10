@@ -22,10 +22,10 @@ import java.util.Optional;
  * This controller is responsible for handling requests relating to the retrieval of library pages and movie information.
  * The endpoints specified in this controller are as follows:
  * <ul>
- *     <li>"/library" This endpoint returns the rendered HTML page of the library</li>
- *     <li>"/library.json" This endpoint returns the JSON representation of the library</li>
- *     <li>"/movie/{id}" This endpoint returns JSON representation of a selected movie</li>
- *     <li>"/movie/rate" This endpoint is used to rate a movie, if the request is authenticated</li>
+ *     <li>"/library" This endpoint returns the rendered HTML page of the library.</li>
+ *     <li>"/library.json" This endpoint returns the JSON representation of the library.</li>
+ *     <li>"/movie/{id}" This endpoint returns JSON representation of a selected movie.</li>
+ *     <li>"/movie/rate" This endpoint is used to rate a movie, if the request is authenticated.</li>
  * </ul>
  */
 @Controller
@@ -35,8 +35,8 @@ public class LibraryController {
 
 
     /**
-     * Constructs the controller with DI for the library service
-     * @param libraryService The service object to be used for library related operations
+     * Constructs the controller with DI for the library service.
+     * @param libraryService The service object to be used for library related operations.
      */
     @Autowired
     public LibraryController(LibraryService libraryService) {
@@ -47,10 +47,10 @@ public class LibraryController {
     /**
      * Returns the library landing page rendered using thymeleaf fragments. This endpoint allows searching of movies by
      * title as well as pagination. Default page size is 20. Pagination and search are not exclusive functions.
-     * @param model Spring MVC model
-     * @param pageNum Page number to go to
-     * @param titleSearch Movie title to search by
-     * @return Rendered HTML representation of the requested library page
+     * @param model Spring MVC model.
+     * @param pageNum Page number to go to.
+     * @param titleSearch Movie title to search by.
+     * @return Rendered HTML representation of the requested library page.
      */
     @GetMapping("/library")
     public String libraryPage(Model model,
@@ -78,10 +78,10 @@ public class LibraryController {
 
     /**
      * Returns JSON representation of a page of the library. This endpoint will always return an object. Supports
-     * pagination as well as search. These functions are not mutually exclusive
-     * @param pageNum Page number to go to
-     * @param titleSearch Movie title to search by
-     * @return JSON representation of the library page
+     * pagination as well as search. These functions are not mutually exclusive.
+     * @param pageNum Page number to go to.
+     * @param titleSearch Movie title to search by.
+     * @return JSON representation of the library page.
      */
     @GetMapping("/library.json")
     public ResponseEntity<Page<Movie>> library(@RequestParam("page") Optional<Integer> pageNum,
@@ -100,9 +100,10 @@ public class LibraryController {
     }
 
     /**
-     * Returns more details of a movie in JSON format, including ratings if the request has authentication data attached.
-     * @param request Request object containing authentication data
-     * @param id ID of the movie to find
+     * Returns more details of a movie in JSON format, including ratings if the request has authentication data
+     * attached.
+     * @param request Request object containing authentication data.
+     * @param id ID of the movie to find.
      * @return JSON representation of a movie, if present in the DB. 404 otherwise.
      */
     @GetMapping("/movie/{movieId}")
@@ -124,9 +125,9 @@ public class LibraryController {
     }
 
     /**
-     * Endpoint responsible for adding a rating to a movie for a given user, if the request is authenticated
-     * @param request Request object containing authentication data
-     * @param data Body of the PUT request, containing the movie ID and the given rating
+     * Endpoint responsible for adding a rating to a movie for a given user, if the request is authenticated.
+     * @param request Request object containing authentication data.
+     * @param data Body of the PUT request, containing the movie ID and the given rating.
      * @return 200 if the rating was successful, 401 if not authenticated.
      */
     @PutMapping(value = "/movie/rate")

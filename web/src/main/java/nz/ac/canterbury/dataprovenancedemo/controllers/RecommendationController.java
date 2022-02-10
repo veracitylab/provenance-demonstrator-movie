@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
  * This controller is responsible for handling requests relating to retrieving recommendations and provenance data.
  * The endpoints specified in this controller are as follows:
  * <ul>
- *     <li>"/recommendations" This endpoint returns a rendered HTML element of recommended movies</li>
- *     <li>"/recommendations.json" This endpoint returns JSON representation of recommended movies</li>
+ *     <li>"/recommendations" This endpoint returns a rendered HTML element of recommended movies.</li>
+ *     <li>"/recommendations.json" This endpoint returns JSON representation of recommended movies.</li>
  *     <li>
  *         "/provenance/{ID}" This endpoint returns JSON representation of the provenance information associated with a
  *         given ID.
@@ -38,8 +38,8 @@ public class RecommendationController {
 
 
     /**
-     * Constructs the controller with DI recommendation service
-     * @param recommendationService The service object to be used for recommendations
+     * Constructs the controller with DI recommendation service.
+     * @param recommendationService The service object to be used for recommendations.
      */
     @Autowired
     public RecommendationController(RecommendationService recommendationService) {
@@ -49,10 +49,10 @@ public class RecommendationController {
 
     /**
      * Obtains a list of recommendations and formats them into a thymeleaf fragment for use
-     * on the demo site
-     * @param model Spring MVC model
-     * @param request Contains user authentication for custom recommendations
-     * @return HTML content of the recommendation list
+     * on the demo site.
+     * @param model Spring MVC model.
+     * @param request Contains user authentication for custom recommendations.
+     * @return HTML content of the recommendation list.
      */
     @GetMapping("/recommendations")
     public String libraryRecommendationsPage(Model model, HttpServletRequest request) {
@@ -67,9 +67,9 @@ public class RecommendationController {
     }
 
     /**
-     * Provides a list of recommendations represented as JSON
-     * @param request Contains user authentication for custom recommendations
-     * @return JSON array of recommendations
+     * Provides a list of recommendations represented as JSON.
+     * @param request Contains user authentication for custom recommendations.
+     * @return JSON array of recommendations.
      */
     @GetMapping("/recommendations.json")
     public ResponseEntity<List<Movie>> libraryRecommendations(HttpServletRequest request) {
@@ -85,9 +85,9 @@ public class RecommendationController {
     }
 
     /**
-     * Handles requests for provenance data for a given ID
-     * @param id ID to obtain provenance data from
-     * @return String representation of the provenance information assosciated with a request
+     * Handles requests for provenance data for a given ID.
+     * @param id ID to obtain provenance data from.
+     * @return String representation of the provenance information associated with a request.
      */
     @GetMapping("/provenance/{id}")
     public ResponseEntity<String> provenanceHandler(@PathVariable String id) {
