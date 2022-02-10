@@ -24,8 +24,8 @@ import java.util.Optional;
  * <ul>
  *     <li>"/library" This endpoint returns the rendered HTML page of the library</li>
  *     <li>"/library.json" This endpoint returns the JSON representation of the library</li>
- *     <li></li>
- *     <li></li>
+ *     <li>"/movie/{id}" This endpoint returns JSON representation of a selected movie</li>
+ *     <li>"/movie/rate" This endpoint is used to rate a movie, if the request is authenticated</li>
  * </ul>
  */
 @Controller
@@ -33,6 +33,11 @@ public class LibraryController {
     private static final Logger logger = LoggerFactory.getLogger(LibraryController.class);
     private final LibraryService libraryService;
 
+
+    /**
+     * Constructs the controller with DI for the library service
+     * @param libraryService The service object to be used for library related operations
+     */
     @Autowired
     public LibraryController(LibraryService libraryService) {
         this.libraryService = libraryService;
@@ -71,7 +76,6 @@ public class LibraryController {
         return "library";
     }
 
-
     /**
      * Returns JSON representation of a page of the library. This endpoint will always return an object. Supports
      * pagination as well as search. These functions are not mutually exclusive
@@ -94,7 +98,6 @@ public class LibraryController {
 
         return ResponseEntity.ok().body(moviePage);
     }
-
 
     /**
      * Returns more details of a movie in JSON format, including ratings if the request has authentication data attached.
@@ -119,7 +122,6 @@ public class LibraryController {
 
         return ResponseEntity.ok().body(movieDetail);
     }
-
 
     /**
      * Endpoint responsible for adding a rating to a movie for a given user, if the request is authenticated

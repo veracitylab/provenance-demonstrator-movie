@@ -4,6 +4,8 @@ import com.google.common.collect.Iterables;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Recommendation;
 import nz.ac.canterbury.dataprovenancedemo.services.RecommendationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,13 +23,19 @@ import java.util.stream.Collectors;
  * This controller is responsible for handling requests relating to retrieving recommendations and provenance data.
  * The endpoints specified in this controller are as follows:
  * <ul>
- *     <li></li>
- *     <li></li>
+ *     <li>"/recommendations" This endpoint returns a rendered HTML element of recommended movies</li>
+ *     <li>"/recommendations.json" This endpoint returns JSON representation of recommended movies</li>
+ *     <li>
+ *         "/provenance/{ID}" This endpoint returns JSON representation of the provenance information associated with a
+ *         given ID.
+ *     </li>
  * </ul>
  */
 @Controller
 public class RecommendationController {
+    private final Logger logger = LoggerFactory.getLogger(RecommendationController.class);
     private final RecommendationService recommendationService;
+
 
     /**
      * Constructs the controller with DI recommendation service
@@ -37,6 +45,7 @@ public class RecommendationController {
     public RecommendationController(RecommendationService recommendationService) {
         this.recommendationService = recommendationService;
     }
+
 
     /**
      * Obtains a list of recommendations and formats them into a thymeleaf fragment for use
