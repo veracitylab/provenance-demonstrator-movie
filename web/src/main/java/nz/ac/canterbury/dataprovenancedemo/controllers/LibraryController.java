@@ -38,8 +38,17 @@ public class LibraryController {
         this.libraryService = libraryService;
     }
 
+
+    /**
+     * Returns the library landing page rendered using thymeleaf fragments. This endpoint allows searching of movies by
+     * title as well as pagination. Default page size is 20. Pagination and search are not exclusive functions.
+     * @param model Spring MVC model
+     * @param pageNum Page number to go to
+     * @param titleSearch Movie title to search by
+     * @return Rendered HTML representation of the requested library page
+     */
     @GetMapping("/library")
-    public String getLibrary(Model model,
+    public String libraryPage(Model model,
                              @RequestParam("page") Optional<Integer> pageNum,
                              @RequestParam("title") Optional<String> titleSearch)
     {
@@ -62,6 +71,37 @@ public class LibraryController {
         return "library";
     }
 
+
+    /**
+     * Returns JSON representation of a page of the library. This endpoint will always return an object. Supports
+     * pagination as well as search. These functions are not mutually exclusive
+     * @param pageNum Page number to go to
+     * @param titleSearch Movie title to search by
+     * @return JSON representation of the library page
+     */
+    @GetMapping("/library.json")
+    public ResponseEntity<Page<Movie>> library(@RequestParam("page") Optional<Integer> pageNum,
+                                               @RequestParam("title") Optional<String> titleSearch)
+    {
+        int currPage = pageNum.orElse(1) - 1;
+        Page<Movie> moviePage;
+
+        if (titleSearch.isPresent()) {
+            moviePage = libraryService.getMoviesByTitle(currPage, titleSearch.get());
+        } else {
+            moviePage = libraryService.getMovies(currPage);
+        }
+
+        return ResponseEntity.ok().body(moviePage);
+    }
+
+
+    /**
+     * Returns more details of a movie in JSON format, including ratings if the request has authentication data attached.
+     * @param request Request object containing authentication data
+     * @param id ID of the movie to find
+     * @return JSON representation of a movie, if present in the DB. 404 otherwise.
+     */
     @GetMapping("/movie/{movieId}")
     public ResponseEntity<Movie> movieDetail(HttpServletRequest request, @PathVariable(value="movieId") int id) {
         Optional<Movie> movie = libraryService.getMovie(id);
@@ -80,6 +120,13 @@ public class LibraryController {
         return ResponseEntity.ok().body(movieDetail);
     }
 
+
+    /**
+     * Endpoint responsible for adding a rating to a movie for a given user, if the request is authenticated
+     * @param request Request object containing authentication data
+     * @param data Body of the PUT request, containing the movie ID and the given rating
+     * @return 200 if the rating was successful, 401 if not authenticated.
+     */
     @PutMapping(value = "/movie/rate")
     public ResponseEntity<String> rateMovie(HttpServletRequest request, @RequestBody String data) {
         Principal principal = request.getUserPrincipal();

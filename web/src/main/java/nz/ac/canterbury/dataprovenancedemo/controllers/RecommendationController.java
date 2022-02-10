@@ -46,7 +46,7 @@ public class RecommendationController {
      * @return HTML content of the recommendation list
      */
     @GetMapping("/recommendations")
-    public String libraryRecommendationPage(Model model, HttpServletRequest request) {
+    public String libraryRecommendationsPage(Model model, HttpServletRequest request) {
         // For customised recommendations
         Principal principal = request.getUserPrincipal();
 
