@@ -3,9 +3,7 @@ package nz.ac.canterbury.dataprovenancedemo.controllers;
 import com.google.common.collect.Iterables;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Rating;
-import nz.ac.canterbury.dataprovenancedemo.database.model.Recommendation;
 import nz.ac.canterbury.dataprovenancedemo.services.LibraryService;
-import nz.ac.canterbury.dataprovenancedemo.services.RecommendationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +17,31 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+/**
+ * This controller is responsible for handling requests relating to the retrieval of library pages and movie information.
+ * The endpoints specified in this controller are as follows:
+ * <ul>
+ *     <li>"/library" This endpoint returns the rendered HTML page of the library</li>
+ *     <li>"/library.json" This endpoint returns the JSON representation of the library</li>
+ *     <li></li>
+ *     <li></li>
+ * </ul>
+ */
 @Controller
 public class LibraryController {
     private static final Logger logger = LoggerFactory.getLogger(LibraryController.class);
     private final LibraryService libraryService;
-    private final RecommendationService recommendationService;
 
     @Autowired
-    public LibraryController(LibraryService libraryService, RecommendationService recommendationService) {
+    public LibraryController(LibraryService libraryService) {
         this.libraryService = libraryService;
-        this.recommendationService = recommendationService;
     }
 
     @GetMapping("/library")
-    public String libraryLanding(Model model,
-                                 @RequestParam("page") Optional<Integer> pageNum,
-                                 @RequestParam("title") Optional<String> titleSearch)
+    public String getLibrary(Model model,
+                             @RequestParam("page") Optional<Integer> pageNum,
+                             @RequestParam("title") Optional<String> titleSearch)
     {
         int currPage = pageNum.orElse(1) - 1;
         Page<Movie> moviePage;
@@ -91,56 +96,5 @@ public class LibraryController {
 
         libraryService.rateMovie(rating);
         return ResponseEntity.ok().build();
-    }
-
-    /**
-     * Obtains a list of recommendations and formats them into a thymeleaf fragment for use
-     * on the demo site
-     * @param model Spring MVC model
-     * @param request Contains user authentication for custom recommendations
-     * @return HTML content of the recommendation list
-     */
-    @GetMapping("/recommendations")
-    public String libraryRecommendationPage(Model model, HttpServletRequest request) {
-        // For customised recommendations
-        Principal principal = request.getUserPrincipal();
-
-        List<Recommendation> recommendations = recommendationService.getRecommendations();
-        Iterable<List<Recommendation>> recommendationSubLists = Iterables.partition(recommendations, 5);
-        model.addAttribute("recommendationGroups", recommendationSubLists);
-
-        return "recommendations";
-    }
-
-    /**
-     * Provides a list of recommendations as JSON
-     * @param request Contains user authentication for custom recommendations
-     * @return JSON array of recommendations
-     */
-    @GetMapping("/recommendations.json")
-    public ResponseEntity<List<Movie>> libraryRecommendations(HttpServletRequest request) {
-
-        List<Recommendation> rec = recommendationService.getRecommendations();
-        List<Movie> movies = rec.stream().map(Recommendation::getMovie).collect(Collectors.toList());
-        String provId = !rec.isEmpty() ? rec.get(0).getId() : null;
-
-        return ResponseEntity
-                .ok()
-                .header("Provenance-ID", provId)
-                .body(movies);
-    }
-
-    /**
-     * Handles requests for provenance data for a given ID
-     * @param id ID to obtain provenance data from
-     * @return String representation of the provenance information assosciated with a request
-     */
-    @GetMapping("/provenance/{id}")
-    public ResponseEntity<String> provenanceHandler(@PathVariable String id) {
-
-        Optional<?> provenanceData = recommendationService.getProvenanceData(id);
-
-        return provenanceData.map(o -> ResponseEntity.ok(o.toString()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

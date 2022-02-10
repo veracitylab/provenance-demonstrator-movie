@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * This class is responsible for handling actions relating to the retrieval of movies and
+ * modification of movie ratings
+ */
 @Service
 public class LibraryService {
     private static final int DEFAULT_PAGE_SIZE = 20;
