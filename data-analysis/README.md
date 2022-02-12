@@ -17,3 +17,5 @@ data-analysis/
 - knn.py: Current doesn't work that well, in progress
 - dataset/: This directory should be created and populated with the files from the Kaggle dataset [found here](https://www.kaggle.com/netflix-inc/netflix-prize-data).
 - outputs/: This directory should be automatically created by scripts that output data.
+
+### Dependencies
