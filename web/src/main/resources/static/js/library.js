@@ -27,14 +27,16 @@ $(document).ready(function () {
  * @param rating
  */
 function rateMovie(movieId, rating) {
+    let ratingData = {
+        "movieId": movieId,
+        "rating": rating
+    }
+
     $.ajax({
         type: "PUT",
         url: 'movie/rate',
         contentType: 'application/json',
-        data: {
-            "movieId": movieId,
-            "rating": rating
-        },
+        data: JSON.stringify(ratingData),
         error: console.error
     });
 }

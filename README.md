@@ -45,6 +45,25 @@ sam:password
 
 
 ## API specification
+This documentation covers the specification of the API used by the web-server. Some endpoints are appended with .json as
+they share the same name as some pages of the web server.
+
+
+#### POST /
+Used for logging into the application. Currently, this endpoint doesn't return a different status for login failure, as
+the login failure is rendered server-side.
+
+##### 
+
+#### GET /library.json
+
+#### GET /movie/{id}
+
+#### GET /recommendations.json
+
+#### GET /provenance
+
+### PUT /movie/rate
 
 ## Additional information
 There are several python scripts in the data-analysis directory that are used for creating SQL files and models that
@@ -52,6 +71,6 @@ are used by the recommender module. The details of these scripts are in [this do
 
 
 ## Credits
-Matthias Galster
-Jens Dietrich
-Sam Shankland
+- Matthias Galster (University of Canterbury)
+- Jens Dietrich (Victoria University of Wellington)
+- Sam Shankland (University of Canterbury)

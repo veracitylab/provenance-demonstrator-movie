@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -131,16 +132,22 @@ public class LibraryController {
      * @return 200 if the rating was successful, 401 if not authenticated.
      */
     @PutMapping(value = "/movie/rate")
-    public ResponseEntity<String> rateMovie(HttpServletRequest request, @RequestBody String data) {
+    public ResponseEntity<String> rateMovie(HttpServletRequest request, @RequestBody Map<String, Integer> data) {
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return ResponseEntity.status(401).build();
         }
 
-        // JSON converter was busted for some reason, enjoy this tasty member here.
-        String[] d = data.split("&");
-        int movieId = Integer.parseInt(d[0].split("=")[1]);
-        int stars = Integer.parseInt(d[1].split("=")[1]);
+        if (!data.containsKey("movieId") || !data.containsKey("rating")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        int movieId = data.get("movieId");
+        int stars = data.get("rating");
+
+        if (stars < 1 || stars > 5) {
+            return ResponseEntity.badRequest().build();
+        }
 
         Rating rating = new Rating(principal.getName(), movieId, stars);
 

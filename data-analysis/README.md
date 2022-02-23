@@ -19,3 +19,6 @@ data-analysis/
 - outputs/: This directory should be automatically created by scripts that output data.
 
 ### Dependencies
+Scripts written using python 3. Dependencies for the python scripts can be found in requirements.txt
+
+To install the requirements run ```pip install -r requirements.txt```
