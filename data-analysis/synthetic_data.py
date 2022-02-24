@@ -70,7 +70,7 @@ def data_gen(users_array: np.ndarray) -> pd.DataFrame:
 
 
 def main():
-    users = load_users("ratings_100.csv")
+    users = load_users("outputs/ratings_100.csv")
     data = data_gen(users)
 
 
