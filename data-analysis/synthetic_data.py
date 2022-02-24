@@ -22,6 +22,11 @@ FEATURES_PROFESSION = ["full time", "part time", "unemployed", "self employed", 
 
 
 def load_users(path: str) -> np.ndarray:
+    """
+    Loads users into a pandas dataframe from disk, and finds all unique user ID's.
+    :param path: Path to load from.
+    :return: Numpy array of unique user ID's.
+    """
     df = pd.read_csv(path,
                      names=["item", "user", "rating"],
                      dtype={
@@ -33,7 +38,13 @@ def load_users(path: str) -> np.ndarray:
     return df['user'].unique()
 
 
-def data_gen(users_array: np.ndarray) -> pd.DataFrame:
+def data_gen(users_array: np.ndarray) -> np.ndarray:
+    """
+    Generates synthetic data for the provided users, specifics of this data are detailed in comments for each section.
+    :param users_array: User ID to create synthetic data for.
+    :return: Array of synthetic, tokenized data.
+    """
+
     num_users = users_array.shape[0]
 
     # Creating synthetic ages from a normal distribution
@@ -66,12 +77,23 @@ def data_gen(users_array: np.ndarray) -> pd.DataFrame:
     out[:, 3] = sex_t
     out[:, 4] = relationship_t
 
-    return None
+    return out
+
+
+def data_write(data: np.ndarray, path: str) -> None:
+    """
+    Writes data to disk.
+    :param path: Path to save data to.
+    :param data: Array of data to be written.
+    """
+    pd.DataFrame(data, columns=["USER_ID", "AGE_T", "REGION_T", "SEX_T", "RELATIONSHIP_T"])\
+        .to_csv(path, index=False)
 
 
 def main():
-    users = load_users("outputs/ratings_100.csv")
+    users = load_users("outputs/ratings_1000.csv")
     data = data_gen(users)
+    data_write(data, "outputs/synthetic_data_frm_ratings_1000.csv")
 
 
 if __name__ == "__main__":
