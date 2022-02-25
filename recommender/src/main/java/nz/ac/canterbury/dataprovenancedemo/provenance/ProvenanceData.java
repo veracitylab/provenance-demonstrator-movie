@@ -46,20 +46,17 @@ public class ProvenanceData {
 //        }
 //
 //        return sb.toString();
-        return "";
+        return dataSetDetails.toString();
     }
 
 
     public static class ProvenanceDataBuilder {
-
         private DataSetInfo dataSet;
         private AlgorithmInfo algorithmInfo;
         private ModelInfo modelInfo;
 
         private String[] personalInfo;
         private String[] additionalInfo;
-
-        protected ProvenanceDataBuilder() {}
 
         public ProvenanceDataBuilder dataSet(DataSetInfo data) {
             this.dataSet = data;

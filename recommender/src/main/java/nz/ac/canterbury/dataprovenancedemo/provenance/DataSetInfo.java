@@ -57,6 +57,19 @@ public class DataSetInfo implements Serializable {
         return Optional.of(additionalInfo);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Dataset information: \n");
+        sb.append(String.format("\tName: %s\n", name));
+
+        if(url != null) {
+            sb.append(String.format("\tURL: %s\n", url));
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Builder for the DataSetInfo class
      */

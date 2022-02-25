@@ -1,6 +1,7 @@
 package nz.ac.canterbury.dataprovenancedemo.recommenders;
 
 import nz.ac.canterbury.dataprovenancedemo.AbstractMovieRecommender;
+import nz.ac.canterbury.dataprovenancedemo.provenance.ProvenanceData;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class CollabFilter extends AbstractMovieRecommender {
     }
 
     @Override
-    public Object getProvenanceData() {
+    public ProvenanceData getProvenanceData() {
         return null;
     }
 }

@@ -1,10 +1,10 @@
 package nz.ac.canterbury.dataprovenancedemo;
 
+import nz.ac.canterbury.dataprovenancedemo.provenance.ProvenanceData;
+
 import java.util.List;
 
 public interface MovieRecommender {
-
-
     /**
      * Obtains a list of recommendations keyed by the ID of the movie to recommend.
      * @param features The features needed to perform the recommendation. Can be nu
@@ -17,5 +17,5 @@ public interface MovieRecommender {
      * Method stub to get the provenance data
      * @return Provenance data for the generated recommendation
      */
-    Object getProvenanceData();
+    ProvenanceData getProvenanceData();
 }

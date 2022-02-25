@@ -1,11 +1,17 @@
 package nz.ac.canterbury.dataprovenancedemo;
 
+import nz.ac.canterbury.dataprovenancedemo.provenance.DataSetInfo;
+import nz.ac.canterbury.dataprovenancedemo.provenance.ProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.provenance.SelfReportedProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.utils.ProvenanceProcessor;
 
 import java.util.List;
 
 public abstract class AbstractMovieRecommender implements MovieRecommender {
+
+    protected static final DataSetInfo dataSetInfo = new DataSetInfo.DataSetInfoBuilder("Netflix Prize Data")
+            .url("https://www.kaggle.com/netflix-inc/netflix-prize-data")
+            .build();
 
 
     @Override
@@ -23,7 +29,7 @@ public abstract class AbstractMovieRecommender implements MovieRecommender {
      * @return
      */
     @Override
-    public Object getProvenanceData() {
+    public ProvenanceData getProvenanceData() {
         SelfReportedProvenanceData srd = ProvenanceProcessor.process(this);
 //        return new ProvenanceData(srd);
         return null;
