@@ -34,18 +34,47 @@ public class ModelInfo implements Serializable {
     }
 
     public Optional<String[]> getRules() {
-        return Optional.of(rules);
+        return Optional.ofNullable(rules);
     }
 
     public Optional<String[]> getAdditionalInfo() {
-        return Optional.of(additionalInfo);
+        return Optional.ofNullable(additionalInfo);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("Model information: %n"));
+
+        sb.append(String.format("Generation steps:%n"));
+        for(int i = 0; i < steps.length; i++) {
+            sb.append(String.format("\t%s. %s%n", i, steps[i]));
+        }
+
+        if(rules != null) {
+            sb.append(String.format("Model rules:%n"));
+            for(int i = 0; i < rules.length; i++) {
+                sb.append(String.format("%s. %s%n", i, rules[i]));
+            }
+        }
+
+        if(additionalInfo != null) {
+            sb.append(String.format("Additional information:%n"));
+
+            for(int i = 0; i < additionalInfo.length; i++) {
+                sb.append(String.format("\t%s. %s%n", i, additionalInfo[i]));
+            }
+        }
+
+        return sb.toString();
     }
 
     /**
      * Builder class for the model information
      */
     public static class ModelInfoBuilder {
-        private String[] steps;
+        private final String[] steps;
         private String[] rules;
         private String[] additionalInfo;
 

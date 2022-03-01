@@ -43,7 +43,7 @@ public class AlgorithmInfo implements Serializable {
     }
 
     public Optional<String> getDescription() {
-        return Optional.of(description);
+        return Optional.ofNullable(description);
     }
 
     public String[] getSteps() {
@@ -51,16 +51,43 @@ public class AlgorithmInfo implements Serializable {
     }
 
     public Optional<String[]> getAdditionalInfo() {
-        return Optional.of(additionalInfo);
+        return Optional.ofNullable(additionalInfo);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("Algorithm information:%n"));
+        sb.append(String.format("Name: %s%n", name));
+
+        if(description != null) {
+            sb.append(String.format("Description: %s%n", description));
+        }
+
+        sb.append(String.format("Steps:%n"));
+        for(int i = 0; i < steps.length; i++) {
+            sb.append(String.format("\t%s. %s%n", i, steps[i]));
+        }
+
+        if(additionalInfo != null) {
+            sb.append(String.format("Additional information:%n"));
+
+            for(int i = 0; i < additionalInfo.length; i++) {
+                sb.append(String.format("\t%s. %s%n", i, additionalInfo[i]));
+            }
+        }
+
+        return sb.toString();
     }
 
     /**
      * Builder class for AlgorithmInfo
      */
     public static class AlgorithmInfoBuilder {
-        private String name;
+        private final String name;
         private String description;
-        private String[] steps;
+        private final String[] steps;
         private String[] additionalInfo;
 
 

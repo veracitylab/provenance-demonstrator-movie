@@ -34,7 +34,7 @@ function rateMovie(movieId, rating) {
 
     $.ajax({
         type: "PUT",
-        url: 'movie/rate',
+        url: 'api/v1/movie/rate',
         contentType: 'application/json',
         data: JSON.stringify(ratingData),
         error: console.error
@@ -52,7 +52,7 @@ function queryMovieDetail(movieId, provenanceId=null) {
 
     $.ajax({
         type: "GET",
-        url: `/movie/${movieId}`,
+        url: `api/v1/movie/${movieId}`,
         success: function(movieData) {
             displayMovieDetail(movieData, provenanceId)
         },
@@ -105,10 +105,10 @@ function provenanceDisplay() {
 
     $.ajax({
         type: "GET",
-        url: `/provenance/${provId}`,
+        url: `api/v1/provenance/${provId}`,
         success: function(data) {
             let dBox = $('#provenanceData');
-            dBox.text(data);
+            dBox.text(data['prettyPrint']);
             $('#provenanceDataContainer').prop('hidden', false);
             console.log(data);
         },

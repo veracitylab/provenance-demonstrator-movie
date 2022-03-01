@@ -46,4 +46,11 @@ public interface MovieRepository extends Repository<Movie, Integer> {
      */
     @Query("Select m from Movie m where m.id in :ids")
     List<Movie> findMoviesByIds(@Param("ids") List<Integer> movieIds);
+
+    /**
+     * Custom query to find all movie ID's
+     * @return List of Movie ID's
+     */
+    @Query("Select m.id from Movie m")
+    List<Integer> findAllMovieIds();
 }

@@ -46,25 +46,37 @@ public class DataSetInfo implements Serializable {
     }
 
     public Optional<String> getUrl() {
-        return Optional.of(url);
+        return Optional.ofNullable(url);
     }
 
     public Optional<String> getDescription() {
-        return Optional.of(description);
+        return Optional.ofNullable(description);
     }
 
     public Optional<String[]> getAdditionalInfo() {
-        return Optional.of(additionalInfo);
+        return Optional.ofNullable(additionalInfo);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Dataset information: \n");
-        sb.append(String.format("\tName: %s\n", name));
+        sb.append(String.format("Dataset information: %n"));
+        sb.append(String.format("Name: %s%n", name));
+
+        if(description != null) {
+            sb.append(String.format("Description: %s%n", description));
+        }
 
         if(url != null) {
-            sb.append(String.format("\tURL: %s\n", url));
+            sb.append(String.format("URL: %s%n", url));
+        }
+
+        if(additionalInfo != null) {
+            sb.append(String.format("Additional information:%n"));
+
+            for(int i = 0; i < additionalInfo.length; i++) {
+                sb.append(String.format("\t%s. %s%n", i, additionalInfo[i]));
+            }
         }
 
         return sb.toString();
@@ -74,7 +86,7 @@ public class DataSetInfo implements Serializable {
      * Builder for the DataSetInfo class
      */
     public static class DataSetInfoBuilder {
-        private String name;
+        private final String name;
         private String url;
         private String description;
         private String[] additionalInfo;

@@ -3,10 +3,12 @@ package nz.ac.canterbury.dataprovenancedemo.controllers;
 import com.google.common.collect.Iterables;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Movie;
 import nz.ac.canterbury.dataprovenancedemo.database.model.Recommendation;
+import nz.ac.canterbury.dataprovenancedemo.provenance.ProvenanceData;
 import nz.ac.canterbury.dataprovenancedemo.services.RecommendationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,7 +73,7 @@ public class RecommendationController {
      * @param request Contains user authentication for custom recommendations.
      * @return JSON array of recommendations.
      */
-    @GetMapping("/recommendations.json")
+    @GetMapping("api/v1/recommendations")
     public ResponseEntity<List<Movie>> libraryRecommendations(HttpServletRequest request) {
 
         List<Recommendation> rec = recommendationService.getRecommendations();
@@ -89,12 +91,12 @@ public class RecommendationController {
      * @param id ID to obtain provenance data from.
      * @return String representation of the provenance information associated with a request.
      */
-    @GetMapping("/provenance/{id}")
+    @GetMapping(value = "api/v1/provenance/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> provenanceHandler(@PathVariable String id) {
 
-        Optional<?> provenanceData = recommendationService.getProvenanceData(id);
+        Optional<ProvenanceData> provenanceData = recommendationService.getProvenanceData(id);
 
-        return provenanceData.map(o -> ResponseEntity.ok(o.toString()))
+        return provenanceData.map(o -> ResponseEntity.ok(o.toJSON(true)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

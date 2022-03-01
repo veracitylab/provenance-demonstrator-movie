@@ -84,7 +84,7 @@ public class LibraryController {
      * @param titleSearch Movie title to search by.
      * @return JSON representation of the library page.
      */
-    @GetMapping("/library.json")
+    @GetMapping("/api/v1/library")
     public ResponseEntity<Page<Movie>> library(@RequestParam("page") Optional<Integer> pageNum,
                                                @RequestParam("title") Optional<String> titleSearch)
     {
@@ -107,7 +107,7 @@ public class LibraryController {
      * @param id ID of the movie to find.
      * @return JSON representation of a movie, if present in the DB. 404 otherwise.
      */
-    @GetMapping("/movie/{movieId}")
+    @GetMapping("api/v1/movie/{movieId}")
     public ResponseEntity<Movie> movieDetail(HttpServletRequest request, @PathVariable(value="movieId") int id) {
         Optional<Movie> movie = libraryService.getMovie(id);
         Principal principal = request.getUserPrincipal();
@@ -131,7 +131,7 @@ public class LibraryController {
      * @param data Body of the PUT request, containing the movie ID and the given rating.
      * @return 200 if the rating was successful, 401 if not authenticated.
      */
-    @PutMapping(value = "/movie/rate")
+    @PutMapping(value = "api/v1/movie/rate")
     public ResponseEntity<String> rateMovie(HttpServletRequest request, @RequestBody Map<String, Integer> data) {
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
