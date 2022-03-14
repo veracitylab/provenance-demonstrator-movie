@@ -70,9 +70,11 @@ function displayMovieDetail(movieData, provenanceId=null) {
     let release = movieData['releaseYear'];
     let imgUrl = movieData['posterUrl'];
     let rating = movieData['populatedRating'];
+    let genres = movieData['genres'];
 
     $('#movieDetailTitle').text(title);
     $('#movieDetailRelease').text(`Released: ${release.split("-")[0]}`);
+    $('#movieDetailGenres').text(`Genres: ${(genres) != null ? genres.replaceAll(',', ', ') : "None found"}`);
     $('#movieDetailImage').prop('src', (imgUrl != null) ? imgUrl : "/img/image-not-found.png");
     $("#movieDetailModal").modal('show');
 

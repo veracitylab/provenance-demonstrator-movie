@@ -170,6 +170,10 @@ public class RuleBased extends AbstractMovieRecommender {
 
     }
 
+    /**
+     * This is for testing purposes only.
+     * @param args
+     */
     public static void main(String[] args) {
         Map<String, Object> testData = Map.of(
                 "user_age_t", "0",
