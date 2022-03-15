@@ -80,18 +80,32 @@ def data_gen(users_array: np.ndarray) -> np.ndarray:
     return out
 
 
-def join_ratings_and_user_attributes(ratings_path: str, attributes_path: str, to_path: str):
+def join_ratings_and_user_attributes(ratings_path: str, attributes_path: str, imdb_data: str, idx_path: str, to_path: str):
     """
     This method joins rating files and attributes files to produce a list of ratings with user attributes attached.
+    :param to_path: Output path
+    :param imdb_data: IMDB data to look for genres in
+    :param idx_path: Indices relating Movie IDs to IMDB ID's
     :param ratings_path: Path to CSV file containing ratings information
     :param attributes_path: Path to CSV file containing user attributes information
     :return:
     """
 
     ratings_df = pd.read_csv(ratings_path, names=["MOVIE_ID", "USER_ID", "RATING"])
+    imdb_df = pd.read_csv(imdb_data,
+                          names=['IMDB_ID', "TITLE_TYPE", "TITLE_1", "TITLE_2", "ADULT",
+                                 "YEAR_S", "YEAR_E", "RUNTIME", "GENRES"],
+                          delimiter="\t")
+    idxs_df = pd.read_csv(idx_path, names=["MOVIE_ID", "IMDB_ID"])
+
+    has_imdb = idxs_df[idxs_df['IMDB_ID'] != 'None']
+    genres = pd.merge(has_imdb, imdb_df[["IMDB_ID", "GENRES"]], on='IMDB_ID', how='left')[["MOVIE_ID", "GENRES"]]
+
+    ratings_with_genres = pd.merge(ratings_df, genres, on='MOVIE_ID', how='left').fillna('null')
+
     users_df = pd.read_csv(attributes_path)
 
-    merged = pd.merge(users_df, ratings_df, on="USER_ID")
+    merged = pd.merge(users_df, ratings_with_genres, on="USER_ID")
 
     merged.to_csv(to_path, index=False)
 
@@ -113,9 +127,11 @@ def main():
 
     # Uncomment the following line to generate the joined files, to be used by WEKA learners for association rule
     # generation
-    join_ratings_and_user_attributes("outputs/ratings_1000.csv",
-                                     "outputs/synthetic_data_frm_ratings_1000.csv",
-                                     "outputs/merged_synthetic_data_1000.csv")
+    join_ratings_and_user_attributes("outputs/ratings_100.csv",
+                                     "outputs/synthetic_data_frm_ratings_100.csv",
+                                     "dataset/imdb_data.tsv",
+                                     "outputs/idxsfile_100.csv",
+                                     "outputs/merged_synthetic_data_100.csv")
 
 
 if __name__ == "__main__":

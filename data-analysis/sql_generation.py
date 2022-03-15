@@ -47,7 +47,7 @@ def write_movies_sql(movie_data: pd.DataFrame, imdb_data: pd.DataFrame, limit: i
     t_cols_no_img = "(id, title, release_year)"
     t_cols_no_gen = "(id, title, release_year, url)"
     filename = r"outputs/movies.sql"
-    indx_file_name = r"outputs/idxsfile_100.csv"
+    indx_file_name = r"outputs/idxsfile_%s.csv" % limit
     idxs = []
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
@@ -143,7 +143,7 @@ def perform_img_query(title: str) -> Union[tuple, None]:
 
 def main():
     # Constants
-    limit = 1000
+    limit = 100
     imdb_data_path = r"dataset/imdb_data.tsv"
     movie_title_path = r"dataset/movie_titles.csv"
 
