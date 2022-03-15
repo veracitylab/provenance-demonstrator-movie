@@ -127,11 +127,11 @@ def main():
 
     # Uncomment the following line to generate the joined files, to be used by WEKA learners for association rule
     # generation
-    join_ratings_and_user_attributes("outputs/ratings_100.csv",
-                                     "outputs/synthetic_data_frm_ratings_100.csv",
+    join_ratings_and_user_attributes("outputs/ratings_1000.csv",
+                                     "outputs/synthetic_data_frm_ratings_1000.csv",
                                      "dataset/imdb_data.tsv",
-                                     "outputs/idxsfile_100.csv",
-                                     "outputs/merged_synthetic_data_100.csv")
+                                     "outputs/idxsfile_1000.csv",
+                                     "outputs/merged_synthetic_data_1000.csv")
 
 
 if __name__ == "__main__":

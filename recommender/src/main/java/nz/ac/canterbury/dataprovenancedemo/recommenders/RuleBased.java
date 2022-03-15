@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public class RuleBased extends AbstractMovieRecommender {
     // Algorithm attributes
     private static final int THRESHOLD_RATING = 3;
-    private static final String MODEL_PATH = "models/jrip_1000.weka";
+    private static final String MODEL_PATH = "models/jrip_1000_old.weka";
     private final JRip jRipClassifier;
 
     // Provenance information, static and runtime
