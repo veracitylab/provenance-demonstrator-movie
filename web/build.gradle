@@ -6,6 +6,7 @@ plugins {
 sourceCompatibility = '11'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -19,6 +20,8 @@ dependencies {
     implementation 'com.h2database:h2'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'com.google.guava:guava:31.0.1-jre'
+
+    implementation 'nz.ac.wgtn.veracity:provenance-injector:1.2'
 
     implementation project(':recommender')
 
