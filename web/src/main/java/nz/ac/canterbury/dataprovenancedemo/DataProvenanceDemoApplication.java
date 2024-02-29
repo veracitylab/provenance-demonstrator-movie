@@ -17,7 +17,27 @@ public class DataProvenanceDemoApplication {
 	private static final Logger logger = LoggerFactory.getLogger(DataProvenanceDemoApplication.class);
 
 	public static void main(String[] args) {
+		//DEBUG
+		System.out.println("Hello, world from the main app!");
+		printClassLoaderChain(DataProvenanceDemoApplication.class);
+		nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter dummy;
+//		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter.class.getFields());
+		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.instrumentation.ProvenanceAgent.class.getFields());
+//		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter.DEBUG_testCrossAppCommunication);
+		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.instrumentation.ProvenanceAgent.DEBUG_testCrossAppCommunication);
+		System.out.println("We could at least declare a local var of type nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter!");
+
 		SpringApplication.run(DataProvenanceDemoApplication.class, args);
+	}
+
+	//DEBUG
+	static void printClassLoaderChain(Class c) {
+		System.out.println("ClassLoader chain for " + c + ":");
+		for (ClassLoader cl = c.getClassLoader(); cl != null; cl = cl.getClass().getClassLoader()) {
+			Class cc = cl.getClass();
+			System.out.println("loader=" + cl + ", class=" + cc + ", name=" + cc.getName() + ", canonicalName=" + cc.getCanonicalName() + ", simpleName=" + cc.getSimpleName() + ", typeName=" + cc.getTypeName());
+		}
+		System.out.println("(null, meaning the bootstrap ClassLoader)\nThe end.");
 	}
 
 
