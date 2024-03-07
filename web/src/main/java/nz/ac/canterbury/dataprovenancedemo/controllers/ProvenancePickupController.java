@@ -45,8 +45,10 @@ public class ProvenancePickupController {
 //        return new ResponseEntity<>("Hello, the <i>real</i> <b>proovenance</b> endpoint for ID " + id + "! tracker field=" + tracker + ".", HttpStatus.OK);
         System.out.println("BEFORE");   //DEBUG
         List<Invocation> data = tracker.pickup(id);
+        System.out.println("pickUpProvenance(id=" + id + ") finds there are " + data.size() + " invocations to send."); //DEBUG
         System.out.println("AFTER");   //DEBUG
         tracker.cull(id);
+        System.out.println("pickUpProvenance(id=" + id + ") finds there are " + data.size() + " invocations to send after calling cull().");    //DEBUG
         return ResponseEntity.ok().body(data);
     }
 
@@ -60,15 +62,16 @@ public class ProvenancePickupController {
 //        }
 //        System.out.println("AFTER calling java.sql.DriverManager.getConnection()");    //DEBUG
         System.out.println("BEFORE calling dummyStaticMethod()");    //DEBUG
-        int result = dummyStaticMethod(42);
+//        int result = dummyStaticMethod(42);
+        int result = nz.ac.canterbury.dataprovenancedemo.DummyClassForTestingProvenance.dummyStaticMethod(42);
         System.out.println("AFTER calling dummyStaticMethod()");    //DEBUG
 
         return ResponseEntity.ok().body("Hello, wurld from the provenance testing endpoint!");      //HACK
     }
 
-    public static int dummyStaticMethod(int x) {
-        int retVal = x * 2;
-        System.out.println("dummyStaticMethod(x=" + x + ") called, will return " + retVal + "!");
-        return retVal;
-    }
+//    public static int dummyStaticMethod(int x) {
+//        int retVal = x * 2;
+//        System.out.println("dummyStaticMethod(x=" + x + ") called, will return " + retVal + "!");
+//        return retVal;
+//    }
 }

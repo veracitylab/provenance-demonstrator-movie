@@ -38,6 +38,8 @@ public class ProvenanceInterceptor implements HandlerInterceptor {
                 request.getServletContext().log("pre handle: tracker is null, has the provenance agent been installed with -javaagent:.../provenance-agent.jar?");
                 response.addHeader("provenance-id", "PROVENANCE-AGENT-IS-MISSING");
             }
+        } else {
+            request.getServletContext().log("pre handle: ignoring non-application URL " + path);
         }
 
         return true;
