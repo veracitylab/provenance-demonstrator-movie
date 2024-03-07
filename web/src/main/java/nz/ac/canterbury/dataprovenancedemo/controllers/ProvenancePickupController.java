@@ -49,4 +49,26 @@ public class ProvenancePickupController {
         tracker.cull(id);
         return ResponseEntity.ok().body(data);
     }
+
+    @GetMapping("/testprov")
+    public ResponseEntity<String> testProv() {
+//        System.out.println("BEFORE calling java.sql.DriverManager.getConnection()");    //DEBUG
+//        try {
+//            java.sql.Connection connection = java.sql.DriverManager.getConnection("bogus:database/url");
+//        } catch (java.sql.SQLException e) {
+//            System.out.println("Caught exception while trying to run java.sql.DriverManager.getConnection(): " + e);
+//        }
+//        System.out.println("AFTER calling java.sql.DriverManager.getConnection()");    //DEBUG
+        System.out.println("BEFORE calling dummyStaticMethod()");    //DEBUG
+        int result = dummyStaticMethod(42);
+        System.out.println("AFTER calling dummyStaticMethod()");    //DEBUG
+
+        return ResponseEntity.ok().body("Hello, wurld from the provenance testing endpoint!");      //HACK
+    }
+
+    public static int dummyStaticMethod(int x) {
+        int retVal = x * 2;
+        System.out.println("dummyStaticMethod(x=" + x + ") called, will return " + retVal + "!");
+        return retVal;
+    }
 }
