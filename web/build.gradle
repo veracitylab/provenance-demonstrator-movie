@@ -21,7 +21,7 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'com.google.guava:guava:31.0.1-jre'
 
-    implementation 'nz.ac.wgtn.veracity:provenance-injector:1.3-SNAPSHOT'
+    compileOnly 'nz.ac.wgtn.veracity:provenance-injector:1.3-SNAPSHOT'
 
     implementation project(':recommender')
 

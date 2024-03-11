@@ -20,12 +20,12 @@ public class DataProvenanceDemoApplication {
 		//DEBUG
 		System.out.println("Hello, world from the main app!");
 		printClassLoaderChain(DataProvenanceDemoApplication.class);
-		nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter dummy;
-//		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter.class.getFields());
-		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.instrumentation.ProvenanceAgent.class.getFields());
-//		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter.DEBUG_testCrossAppCommunication);
-		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.instrumentation.ProvenanceAgent.DEBUG_testCrossAppCommunication);
-		System.out.println("We could at least declare a local var of type nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter!");
+//		nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter dummy;
+////		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter.class.getFields());
+//		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.instrumentation.ProvenanceAgent.class.getFields());
+////		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter.DEBUG_testCrossAppCommunication);
+//		System.out.println("(in main app) DEBUG_testCrossAppCommunication=" + nz.ac.wgtn.veracity.provenance.injector.instrumentation.ProvenanceAgent.DEBUG_testCrossAppCommunication);
+//		System.out.println("We could at least declare a local var of type nz.ac.wgtn.veracity.provenance.injector.tracker.jee.ProvenanceTrackerFilter!");
 
 		SpringApplication.run(DataProvenanceDemoApplication.class, args);
 	}
