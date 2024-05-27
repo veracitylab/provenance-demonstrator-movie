@@ -18,6 +18,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.io.*;
+import java.net.*;
 
 /**
  * This controller is responsible for handling requests relating to the retrieval of library pages and movie information.
@@ -152,6 +154,32 @@ public class LibraryController {
         Rating rating = new Rating(principal.getName(), movieId, stars);
 
         libraryService.rateMovie(rating);
+
+        // Test capture of outgoing server-side HTTP requests
+        String outgoingHttpUrl = "https://app.veracity.homes/omar-notifications-main-menu.html?name=" + principal.getName() + "&movieId=" + movieId + "&stars=" + stars;
+        logger.info("Server will send outgoing HTTP request to " + outgoingHttpUrl + " -- let's see if it's picked up.");
+        String result = getHTML(outgoingHttpUrl);
+        logger.info("Server sent outgoing HTTP request to " + outgoingHttpUrl + " and got response '" + result + "'.");
+
         return ResponseEntity.ok().build();
+    }
+
+    public static String getHTML(String urlToRead) {
+        try {
+            StringBuilder result = new StringBuilder();
+            URL url = new URL(urlToRead);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()))) {
+                for (String line; (line = reader.readLine()) != null; ) {
+                    result.append(line);
+                }
+            }
+            return result.toString();
+        } catch (Exception e) {
+            logger.error("Yikes, an exception occurred! " + e);
+            return "EXCEPTION_OCCURRED";        //HACK
+        }
     }
 }
