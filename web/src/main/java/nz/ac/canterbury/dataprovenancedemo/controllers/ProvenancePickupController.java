@@ -63,7 +63,7 @@ public class ProvenancePickupController {
 //        System.out.println("AFTER calling java.sql.DriverManager.getConnection()");    //DEBUG
         System.out.println("BEFORE calling dummyStaticMethod()");    //DEBUG
 //        int result = dummyStaticMethod(42);
-        int result = nz.ac.canterbury.dataprovenancedemo.DummyClassForTestingProvenance.dummyStaticMethod(42);
+        String result = nz.ac.canterbury.dataprovenancedemo.DummyClassForTestingProvenance.dummyStaticMethod("foo");
         System.out.println("AFTER calling dummyStaticMethod()");    //DEBUG
 
         return ResponseEntity.ok().body("Hello, wurld from the provenance testing endpoint!");      //HACK
