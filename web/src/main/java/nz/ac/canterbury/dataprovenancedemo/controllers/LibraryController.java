@@ -187,8 +187,9 @@ public class LibraryController {
     public static String getHtmlUsingApacheHttpClient(String urlToRead) {
         System.out.println("getHtmlUsingApacheHttpClient(" + urlToRead +") called.");   //DEBUG
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(urlToRead);
+//        HttpGet httpGet = new HttpGet(urlToRead);
         try {
+            HttpGet httpGet = new HttpGet(new URI(urlToRead));
             CloseableHttpResponse response = httpclient.execute(httpGet);
             try {
                 HttpEntity entity = response.getEntity();
@@ -201,6 +202,9 @@ public class LibraryController {
             }
         } catch (IOException e) {
             logger.error("Yikes, an IOException occurred! " + e);
+            return "EXCEPTION_OCCURRED";        //HACK
+        } catch (URISyntaxException e) {
+            logger.error("Yikes, a URISyntaxException occurred! " + e);
             return "EXCEPTION_OCCURRED";        //HACK
         }
     }
