@@ -12,6 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.core5.http.HttpEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -158,28 +163,55 @@ public class LibraryController {
         // Test capture of outgoing server-side HTTP requests
         String outgoingHttpUrl = "https://app.veracity.homes/omar-notifications-main-menu.html?name=" + principal.getName() + "&movieId=" + movieId + "&stars=" + stars;
         logger.info("Server will send outgoing HTTP request to " + outgoingHttpUrl + " -- let's see if it's picked up.");
-        String result = getHTML(outgoingHttpUrl);
+        String result = getHtmlUsingUrlOpenConnection(outgoingHttpUrl);
         logger.info("Server sent outgoing HTTP request to " + outgoingHttpUrl + " and got response '" + result + "'.");
 
         return ResponseEntity.ok().build();
     }
 
-    public static String getHTML(String urlToRead) {
+    public static String getHtmlUsingUrlOpenConnection(String urlToRead) {
+        System.out.println("getHtmlUsingUrlOpenConnection(" + urlToRead +") called.");   //DEBUG
         try {
-            StringBuilder result = new StringBuilder();
             URL url = new URL(urlToRead);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()))) {
-                for (String line; (line = reader.readLine()) != null; ) {
-                    result.append(line);
-                }
-            }
-            return result.toString();
+            return readStreamIntoString(conn.getInputStream());
         } catch (Exception e) {
             logger.error("Yikes, an exception occurred! " + e);
             return "EXCEPTION_OCCURRED";        //HACK
         }
+    }
+
+    // Mostly from https://hc.apache.org/httpcomponents-client-4.5.x/quickstart.html
+    public static String getHtmlUsingApacheHttpClient(String urlToRead) {
+        System.out.println("getHtmlUsingApacheHttpClient(" + urlToRead +") called.");   //DEBUG
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(urlToRead);
+        try {
+            CloseableHttpResponse response = httpclient.execute(httpGet);
+            try {
+                HttpEntity entity = response.getEntity();
+                return readStreamIntoString(entity.getContent());
+            } catch (Exception e) {
+                logger.error("Yikes, an exception occurred! " + e);
+                return "EXCEPTION_OCCURRED";        //HACK
+            } finally {
+                response.close();
+            }
+        } catch (IOException e) {
+            logger.error("Yikes, an IOException occurred! " + e);
+            return "EXCEPTION_OCCURRED";        //HACK
+        }
+    }
+
+    private static String readStreamIntoString(InputStream is) throws IOException {
+        StringBuilder result = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(is))) {
+            for (String line; (line = reader.readLine()) != null; ) {
+                result.append(line);
+            }
+        }
+        return result.toString();
     }
 }
