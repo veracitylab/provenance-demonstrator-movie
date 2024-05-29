@@ -163,7 +163,8 @@ public class LibraryController {
         // Test capture of outgoing server-side HTTP requests
         String outgoingHttpUrl = "https://app.veracity.homes/omar-notifications-main-menu.html?name=" + principal.getName() + "&movieId=" + movieId + "&stars=" + stars;
         logger.info("Server will send outgoing HTTP request to " + outgoingHttpUrl + " -- let's see if it's picked up.");
-        String result = getHtmlUsingUrlOpenConnection(outgoingHttpUrl);
+//        String result = getHtmlUsingUrlOpenConnection(outgoingHttpUrl);
+        String result = getHtmlUsingApacheHttpClient(outgoingHttpUrl);
         logger.info("Server sent outgoing HTTP request to " + outgoingHttpUrl + " and got response '" + result + "'.");
 
         return ResponseEntity.ok().build();
